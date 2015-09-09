@@ -1,0 +1,90 @@
+﻿<div class="bua bua--dashboard" ng-controller="Our.Umbraco.BulkUserAdmin.DashboardController">
+    
+    <div class="bua-toolbar">
+        <div class="bua-toolbar__left">{{selectedUsers.length}} Users Selected</div>
+        <div class="bua-toolbar__right">
+            <button class="btn" ng-click="doUpdate()" ng-class="{'btn-success':selectedUsers.length > 0}" ng-disabled="selectedUsers.length === 0">Update</button>
+        </div>
+    </div>
+
+    <div class="umb-listview">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td style="width: 35px">
+                        <input type="checkbox"
+                            ng-checked="isSelectedAll()"
+                            ng-click="selectAll()" />
+                    </td>
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                        Email
+                    </td>
+                    <td>
+                        Active
+                    </td>
+                </tr>
+            </thead>
+
+            <tbody ng-show="users.totalItems === 0">
+                <tr>
+                    <td colspan="4">
+                        <p><localize key="content_listViewNoItems">There are no items to show in the list.</localize></p>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tbody ng-hide="users.totalItems === 0">
+                <tr ng-repeat="user in users.items">
+                    <td>
+                        <input type="checkbox"
+                            ng-checked="isSelected(user)"
+                            ng-click="selectUser(user)"/>
+                    </td>
+                    <td>
+                        <a href="/umbraco/#/users/framed/%252Fumbraco%252Fusers%252FeditUser.aspx%253Fid%253D{{user.Id}}">
+                            {{user.Name}}
+                        </a>
+                    </td>
+                    <td>
+                        {{user.Email}}
+                    </td>
+                    <td>
+                        <i class="icon icon-check green" ng-class="{hide:!user.Active}"></i>
+                        <i class="icon icon-delete red" ng-class="{hide:user.Active}"></i> 
+                    </td>
+                </tr>
+            </tbody>
+            
+            <tfoot ng-show="pagination.length > 1">
+                <tr>
+                    <th colspan="4">
+                        <div class="pull-left">
+                        </div>
+                        <div class="pagination pagination-right">
+                            <ul>
+                                <li ng-class="{disabled:users.pageNumber <= 0}">
+                                    <a href="#" ng-click="prev()" prevent-default>
+                                        Previous
+                                    </a>
+                                </li>
+                                <li ng-repeat="pgn in pagination" ng-class="{active:pgn.idx == users.pageNumber}">
+                                    <a href="#" ng-click="goToPage(pgn.idx)" prevent-default>{{pgn.name}}</a>
+                                </li>
+                                <li ng-class="{disabled:users.pageNumber >= (users.totalPages - 1)}">
+                                    <a href="#" ng-click="next()" prevent-default>
+                                        Next
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </th>
+                </tr>
+            </tfoot>
+
+        </table>
+    </div>
+
+</div>
