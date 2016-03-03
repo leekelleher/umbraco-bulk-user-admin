@@ -1,7 +1,11 @@
 # Bulk User Admin for Umbraco
 
 [![Build status](https://img.shields.io/appveyor/ci/leekelleher/umbraco-bulk-user-admin.svg)](https://ci.appveyor.com/project/leekelleher/umbraco-bulk-user-admin)
+![Umbraco package unreleased](https://img.shields.io/badge/pkg-unreleased-red.svg)
 
+A dashboard for the Users section in the Umbraco back-office that enables bulk administration to edit users, e.g. change section permissions, disable access, etc.
+
+![Bulk User Admin dashboard in the Umbraco back-office](docs/assets/img/screenshot-01.png)
 
 > *Note:* Bulk User Admin for Umbraco has been developed against **Umbraco v7.2.0** and will support that version and above.
 
