@@ -23,6 +23,9 @@
                         Email
                     </td>
                     <td>
+                        User Type
+                    </td>
+                    <td>
                         Active
                     </td>
                 </tr>
@@ -50,6 +53,9 @@
                     </td>
                     <td>
                         {{user.Email}}
+                    </td>
+                    <td>
+                        {{user.UserType.Name}}
                     </td>
                     <td>
                         <i class="icon icon-check green" ng-class="{hide:!user.Active}"></i>
