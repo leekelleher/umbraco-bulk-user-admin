@@ -123,6 +123,7 @@
 			<PluginFiles Include="$(CoreProjectDir)\Web\UI\**\*.*" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 			<NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
+      		<DashboardConfigXDTInstallFile Include="$(MSBuildProjectDirectory)\transforms\dashboard.config.install.xdt" />
 		</ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildUmbDir)\bin" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildUmbDir)" />
@@ -132,6 +133,12 @@
 		<Copy SourceFiles="@(PluginFiles)" DestinationFiles="@(PluginFiles->'$(BuildNuGetDir)\Content\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(SrcFiles)" DestinationFiles="@(SrcFiles->'$(BuildNuGetDir)\src\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
+
+		<!-- Umbraco -->
+    	<Copy SourceFiles="@(DashboardConfigXDTInstallFile)" DestinationFolder="$(BuildUmbDir)\App_Plugins\BulkUserAdmin\Install" />
+
+		<!-- NuGet -->
+    	<Copy SourceFiles="@(DashboardConfigXDTInstallFile)" DestinationFolder="$(BuildNuGetDir)\Content\Config" />
 	</Target>
 
 	<!-- MANIFEST UMBRACO -->
