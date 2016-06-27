@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dashBoard xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <section alias="Our.Umbraco.BulkUserAdmin" xdt:Locator="Match(alias)" xdt:Transform="InsertIfMissing">
+    <areas>
+      <area>users</area>
+    </areas>
+    <tab caption="Bulk User Admin">
+      <access>
+        <grant>admin</grant>
+      </access>
+      <control showOnce="false" addPanel="true" panelCaption="">
+        /App_Plugins/BulkUserAdmin/views/bua.dashboard.html
+      </control>
+    </tab>
+  </section>
+</dashBoard>
