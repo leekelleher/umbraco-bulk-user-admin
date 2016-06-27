@@ -124,6 +124,8 @@
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 			<NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
       		<DashboardConfigXDTInstallFile Include="$(MSBuildProjectDirectory)\transforms\dashboard.config.install.xdt" />
+			  
+ 			<InstallPsFile Include="$(MSBuildProjectDirectory)\Install.ps1" />
 		</ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildUmbDir)\bin" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildUmbDir)" />
@@ -136,6 +138,8 @@
 
 		<!-- NuGet -->
     	<Copy SourceFiles="@(DashboardConfigXDTInstallFile)" DestinationFolder="$(BuildNuGetDir)\Content\Config" />
+
+		<Copy SourceFiles="@(InstallPsFile)" DestinationFolder="$(BuildNuGetDir)\tools" />
 	</Target>
 
 	<!-- MANIFEST UMBRACO -->
