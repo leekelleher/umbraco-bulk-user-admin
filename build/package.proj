@@ -134,9 +134,6 @@
 		<Copy SourceFiles="@(SrcFiles)" DestinationFiles="@(SrcFiles->'$(BuildNuGetDir)\src\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
 
-		<!-- Umbraco -->
-    	<Copy SourceFiles="@(DashboardConfigXDTInstallFile)" DestinationFolder="$(BuildUmbDir)\App_Plugins\BulkUserAdmin\Install" />
-
 		<!-- NuGet -->
     	<Copy SourceFiles="@(DashboardConfigXDTInstallFile)" DestinationFolder="$(BuildNuGetDir)\Content\Config" />
 	</Target>
