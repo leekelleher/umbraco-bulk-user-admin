@@ -12,14 +12,17 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
     [UmbracoApplicationAuthorize(Constants.Applications.Users)]
     public class BulkUserAdminApiController : UmbracoAuthorizedApiController
     {
+        private const string DefaultOrderByDirection = ApiConstants.OrderByDirections.Ascending;
+        private const string DefaultOrderByPropertyName = "Name";
+
         [HttpGet]
         public PagedResult<object> GetUsers()
         {
-            return this.GetUsers(0);
+            return this.GetUsers(0, DefaultOrderByPropertyName, DefaultOrderByDirection);
         }
 
         [HttpGet]
-        public PagedResult<object> GetUsers(int p)
+        public PagedResult<object> GetUsers(int p, string orderByPropertyName, string orderByDirection)
         {
             var pageSize = 1000;
 
@@ -34,7 +37,10 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
                     Active = x.IsApproved && !x.IsLockedOut
                 });
 
-            var result = new PagedResult<object>(total, p, pageSize) { Items = items };
+            var result = new PagedResult<object>(total, p, pageSize)
+            {
+                Items = items.OrderBy(orderByPropertyName, orderByDirection)
+            };
 
             return result;
         }
