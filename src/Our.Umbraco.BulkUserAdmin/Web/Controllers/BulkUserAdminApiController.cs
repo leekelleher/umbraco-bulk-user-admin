@@ -30,6 +30,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
                     x.Id,
                     x.Name,
                     x.Email,
+                    UserType = x.UserType.Name,
                     Active = x.IsApproved && !x.IsLockedOut
                 });
 
