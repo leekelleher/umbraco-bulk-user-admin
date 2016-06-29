@@ -10,7 +10,7 @@
 	function ($scope, $rootScope, $window, dialogService, notificationsService, buaResources) {
 	    $scope.sortOptions = {
 	        propertyName: "Name",
-	        direction: "asc"
+	        direction: "Ascending"
 	    };
 
 	    $scope.selectedUsers = [];
@@ -102,11 +102,11 @@
 	    $scope.sort = function (field) {
 	        $scope.sortOptions.propertyName = field;
 
-	        if ($scope.sortOptions.direction === "desc") {
-	            $scope.sortOptions.direction = "asc";
+	        if ($scope.sortOptions.direction === "Descending") {
+	            $scope.sortOptions.direction = "Ascending";
 	        }
 	        else {
-	            $scope.sortOptions.direction = "desc";
+	            $scope.sortOptions.direction = "Descending";
 	        }
 
 	        $scope.goToPage(0, $scope.sortOptions);

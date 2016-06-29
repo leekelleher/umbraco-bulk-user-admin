@@ -7,7 +7,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web
 {
     internal static class GenericCollectionOrderByExtensions
     {
-        public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> items, string propertyName, string direction)
+        public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> items, string propertyName, BulkUserAdminApiConstants.OrderByDirections direction)
         {
             var type = typeof(T);
             var property = type.GetProperty(propertyName);
@@ -21,12 +21,10 @@ namespace Our.Umbraco.BulkUserAdmin.Web
 
             switch (direction)
             {
-                case ApiConstants.OrderByDirections.Ascending:
-                    return items.OrderBy(orderByLambda);
-                case ApiConstants.OrderByDirections.Descending:
+                case BulkUserAdminApiConstants.OrderByDirections.Descending:
                     return items.OrderByDescending(orderByLambda);
                 default:
-                    throw new NotSupportedException(string.Format("Direction \"{0}\" is not supported.", direction));
+                    return items.OrderBy(orderByLambda);
             }
         }
     }
