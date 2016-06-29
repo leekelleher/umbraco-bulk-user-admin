@@ -85,7 +85,7 @@
                     options: {
                         selectedUsers: $scope.selectedUsers
                     },
-                    template: '/App_Plugins/BulkUserAdmin/views/bua.dialog.html',
+                    template: "/App_Plugins/BulkUserAdmin/views/bua.dialog.html",
                     show: true,
                     callback: function (success) {
                         if (success) {

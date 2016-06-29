@@ -1,4 +1,4 @@
-﻿angular.module('umbraco.resources').factory('Our.Umbraco.BulkUserAdmin.Resources',
+﻿angular.module("umbraco.resources").factory("Our.Umbraco.BulkUserAdmin.Resources",
     function ($q, $http, umbRequestHelper) {
         return {
             getUsers: function (page, sortOptions) {
@@ -13,7 +13,7 @@
                             dir: sortOptions.direction
                         }
                     }),
-                    'Failed to get users'
+                    "Failed to get users"
                 );
             },
             getUserTypes: function () {
@@ -23,7 +23,7 @@
                         url: url,
                         method: "GET"
                     }),
-                    'Failed to get user types'
+                    "Failed to get user types"
                 );
             },
             getSections: function () {
@@ -33,7 +33,7 @@
                         url: url,
                         method: "GET"
                     }),
-                    'Failed to get sections'
+                    "Failed to get sections"
                 );
             },
             updateUsers: function (data) {
@@ -44,7 +44,7 @@
                         method: "POST",
                         data: data
                     }),
-                    'Failed to update users'
+                    "Failed to update users"
                 );
             },
             deleteUsers: function (data) {
@@ -55,7 +55,7 @@
                         method: "POST",
                         data: data
                     }),
-                    'Failed to delete users'
+                    "Failed to delete users"
                 );
             }
         };
