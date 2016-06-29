@@ -9,8 +9,8 @@
                         method: "GET",
                         params: {
                             p: page,
-                            orderByPropertyName: sortOptions.propertyName,
-                            orderByDirection: sortOptions.direction
+                            prop: sortOptions.propertyName,
+                            dir: sortOptions.direction
                         }
                     }),
                     'Failed to get users'

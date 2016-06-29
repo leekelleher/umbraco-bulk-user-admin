@@ -22,7 +22,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
         }
 
         [HttpGet]
-        public PagedResult<object> GetUsers(int p, string orderByPropertyName, BulkUserAdminApiConstants.OrderByDirections orderByDirection)
+        public PagedResult<object> GetUsers(int p, string prop, BulkUserAdminApiConstants.OrderByDirections dir)
         {
             var pageSize = 1000;
 
@@ -39,7 +39,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
 
             var result = new PagedResult<object>(total, p, pageSize)
             {
-                Items = items.OrderBy(orderByPropertyName, orderByDirection)
+                Items = items.OrderBy(prop, dir)
             };
 
             return result;
