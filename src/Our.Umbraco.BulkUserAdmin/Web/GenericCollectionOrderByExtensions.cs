@@ -7,7 +7,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web
 {
     internal static class GenericCollectionOrderByExtensions
     {
-        public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> items, string propertyName, BulkUserAdminApiConstants.OrderByDirections direction)
+        public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> items, string propertyName, OrderByDirections direction)
         {
             var type = typeof(T);
             var property = type.GetProperty(propertyName);
@@ -21,7 +21,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web
 
             switch (direction)
             {
-                case BulkUserAdminApiConstants.OrderByDirections.Descending:
+                case OrderByDirections.Descending:
                     return items.OrderByDescending(orderByLambda);
                 default:
                     return items.OrderBy(orderByLambda);
