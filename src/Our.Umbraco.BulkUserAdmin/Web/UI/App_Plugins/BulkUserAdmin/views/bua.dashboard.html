@@ -28,12 +28,18 @@
                     <td>
                         <a ng-click="sort('Active')" class="sortable" prevent-default>Active<i class="icon" ng-class="{'icon-navigation-up': isSortDirection('Active', 'Ascending'), 'icon-navigation-down': isSortDirection('Active', 'Descending')}"></i></a>
                     </td>
+                    <td>
+                        <form class="pull-right" novalidate="">
+                            <i class="icon-search" ng-click="enterSearch($event)"></i>
+                            <input type="text" ng-model="filter" on-keyup="search()" prevent-enter-submit="" no-dirty-check="">
+                        </form>
+                    </td>
                 </tr>
             </thead>
 
             <tbody ng-show="users.totalItems === 0">
                 <tr>
-                    <td colspan="4">
+                    <td colspan="6">
                         <p><localize key="content_listViewNoItems">There are no items to show in the list.</localize></p>
                     </td>
                 </tr>
@@ -61,6 +67,7 @@
                         <i class="icon icon-check green" ng-class="{hide:!user.Active}"></i>
                         <i class="icon icon-delete red" ng-class="{hide:user.Active}"></i>
                     </td>
+                    <td><!-- --></td>
                 </tr>
             </tbody>
 

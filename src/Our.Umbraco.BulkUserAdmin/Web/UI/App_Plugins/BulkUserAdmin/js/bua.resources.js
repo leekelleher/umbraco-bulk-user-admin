@@ -1,7 +1,7 @@
 ﻿angular.module("umbraco.resources").factory("Our.Umbraco.BulkUserAdmin.Resources",
     function ($q, $http, umbRequestHelper) {
         return {
-            getUsers: function (page, sortOptions) {
+            getUsers: function (page, sortOptions, filter) {
                 var url = "/umbraco/backoffice/api/BulkUserAdminApi/GetUsers";
                 return umbRequestHelper.resourcePromise(
                     $http({
@@ -10,7 +10,8 @@
                         params: {
                             p: page,
                             prop: sortOptions.propertyName,
-                            dir: sortOptions.direction
+                            dir: sortOptions.direction,
+                            f: filter
                         }
                     }),
                     "Failed to get users"

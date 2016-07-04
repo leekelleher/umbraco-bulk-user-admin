@@ -14,15 +14,19 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
     {
         private const OrderByDirections DefaultOrderByDirection = OrderByDirections.Ascending;
         private const string DefaultOrderByPropertyName = "Name";
+        private const string DefaultFilter = "";
+
+        private const string FilterTermActive = "Active";
+        private const string FilterTermInactive = "Inactive";
 
         [HttpGet]
         public PagedResult<object> GetUsers()
         {
-            return this.GetUsers(0, DefaultOrderByPropertyName, DefaultOrderByDirection);
+            return this.GetUsers(0, DefaultOrderByPropertyName, DefaultOrderByDirection, DefaultFilter);
         }
 
         [HttpGet]
-        public PagedResult<object> GetUsers(int p, string prop, OrderByDirections dir)
+        public PagedResult<object> GetUsers(int p, string prop, OrderByDirections dir, string f)
         {
             var pageSize = 1000;
 
@@ -37,9 +41,22 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
                     Active = x.IsApproved && !x.IsLockedOut
                 });
 
+            var hasFilter = string.IsNullOrWhiteSpace(f) == false;
+
+            var filteredItems = hasFilter
+                ? items.Where(x => new[] {
+                                           x.Name,
+                                           x.Email,
+                                           x.UserType,
+                                           x.Active ? FilterTermActive : FilterTermInactive
+                                         }.InvariantContains(f))
+                : items;
+
+            total = filteredItems.Count();
+
             var result = new PagedResult<object>(total, p, pageSize)
             {
-                Items = items.OrderBy(prop, dir)
+                Items = filteredItems.OrderBy(prop, dir)
             };
 
             return result;
