@@ -1,5 +1,5 @@
 ﻿<div class="bua bua--dashboard" ng-controller="Our.Umbraco.BulkUserAdmin.DashboardController">
-    
+
     <div class="bua-toolbar">
         <div class="bua-toolbar__left">{{selectedUsers.length}} Users Selected</div>
         <div class="bua-toolbar__right">
@@ -13,20 +13,20 @@
                 <tr>
                     <td style="width: 35px">
                         <input type="checkbox"
-                            ng-checked="isSelectedAll()"
-                            ng-click="selectAll()" />
+                               ng-checked="isSelectedAll()"
+                               ng-click="selectAll()" />
                     </td>
                     <td>
-                        Name
+                        <a ng-click="sort('Name')" class="sortable" prevent-default>Name<i class="icon" ng-class="{'icon-navigation-up': isSortDirection('Name', 'Ascending'), 'icon-navigation-down': isSortDirection('Name', 'Descending')}"></i></a>
                     </td>
                     <td>
-                        Email
+                        <a ng-click="sort('Email')" class="sortable" prevent-default>Email<i class="icon" ng-class="{'icon-navigation-up': isSortDirection('Email', 'Ascending'), 'icon-navigation-down': isSortDirection('Email', 'Descending')}"></i></a>
                     </td>
                     <td>
-                        User Type
+                        <a ng-click="sort('UserType')" class="sortable" prevent-default>User Type<i class="icon" ng-class="{'icon-navigation-up': isSortDirection('UserType', 'Ascending'), 'icon-navigation-down': isSortDirection('UserType', 'Descending')}"></i></a>
                     </td>
                     <td>
-                        Active
+                        <a ng-click="sort('Active')" class="sortable" prevent-default>Active<i class="icon" ng-class="{'icon-navigation-up': isSortDirection('Active', 'Ascending'), 'icon-navigation-down': isSortDirection('Active', 'Descending')}"></i></a>
                     </td>
                 </tr>
             </thead>
@@ -43,8 +43,8 @@
                 <tr ng-repeat="user in users.items">
                     <td>
                         <input type="checkbox"
-                            ng-checked="isSelected(user)"
-                            ng-click="selectUser(user)"/>
+                               ng-checked="isSelected(user)"
+                               ng-click="selectUser(user)" />
                     </td>
                     <td>
                         <a href="/umbraco/#/users/framed/%252Fumbraco%252Fusers%252FeditUser.aspx%253Fid%253D{{user.Id}}">
@@ -59,11 +59,11 @@
                     </td>
                     <td>
                         <i class="icon icon-check green" ng-class="{hide:!user.Active}"></i>
-                        <i class="icon icon-delete red" ng-class="{hide:user.Active}"></i> 
+                        <i class="icon icon-delete red" ng-class="{hide:user.Active}"></i>
                     </td>
                 </tr>
             </tbody>
-            
+
             <tfoot ng-show="pagination.length > 1">
                 <tr>
                     <th colspan="4">

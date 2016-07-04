@@ -1,55 +1,59 @@
 ﻿angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DashboardController", [
 
-	"$scope",
-	"$rootScope",
-	"$window",
+    "$scope",
+    "$rootScope",
+    "$window",
     "dialogService",
     "notificationsService",
-	"Our.Umbraco.BulkUserAdmin.Resources",
+    "Our.Umbraco.BulkUserAdmin.Resources",
 
-	function ($scope, $rootScope, $window, dialogService, notificationsService, buaResources) {
+    function ($scope, $rootScope, $window, dialogService, notificationsService, buaResources) {
+        $scope.sortOptions = {
+            propertyName: "Name",
+            direction: "Ascending"
+        };
 
-	    $scope.selectedUsers = [];
+        $scope.selectedUsers = [];
 
-	    $scope.prev = function () {
-	        $scope.goToPage($scope.users.pageNumber - 1);
-	    };
+        $scope.prev = function () {
+            $scope.goToPage($scope.users.pageNumber - 1, $scope.sortOptions);
+        };
 
-	    $scope.next = function() {
-	        $scope.goToPage($scope.users.pageNumber + 1);
-	    };
+        $scope.next = function () {
+            $scope.goToPage($scope.users.pageNumber + 1, $scope.sortOptions);
+        };
 
-	    $scope.goToPage = function (idx) {
-	        buaResources.getUsers(idx).then(function (data) {
-	            $scope.users = data;
+        $scope.goToPage = function (idx, sortOptions) {
+            buaResources.getUsers(idx, sortOptions).then(function (data) {
+                $scope.users = data;
 
-	            var pagniation = [];
-	            for (var i = 0; i < data.totalPages; i++) {
-	                pagniation.push({
-	                    idx: i,
-	                    name: i + 1
-	                });
-	            }
+                var pagniation = [];
+                for (var i = 0; i < data.totalPages; i++) {
+                    pagniation.push({
+                        idx: i,
+                        name: i + 1
+                    });
+                }
 
-	            $scope.pagination = pagniation;
-	        });
-	    };
+                $scope.pagination = pagniation;
+            });
+        };
 
-	    $scope.isSelected = function(usr) {
-	        return _.find($scope.selectedUsers, function (itm) {
-	            return itm.Id == usr.Id;
-	        }) !== undefined;
-	    };
+        $scope.isSelected = function (usr) {
+            return _.find($scope.selectedUsers, function (itm) {
+                return itm.Id == usr.Id;
+            }) !== undefined;
+        };
 
-	    $scope.isSelectedAll = function () {
-	        return $scope.users !== undefined && _.every($scope.users.items, function(itm) {
-	            return !!_.find($scope.selectedUsers, function(itm2) {
-	                return itm.Id == itm2.Id;
-	            });
-	        });
-	    };
+        $scope.isSelectedAll = function () {
+            return $scope.users !== undefined && _.every($scope.users.items, function (itm) {
+                return !!_.find($scope.selectedUsers, function (itm2) {
+                    return itm.Id == itm2.Id;
+                });
+            });
+        };
 
-	    $scope.selectUser = function (usr) {
+        $scope.selectUser = function (usr) {
             if (!$scope.isSelected(usr)) {
                 $scope.selectedUsers.push(usr);
             } else {
@@ -57,48 +61,63 @@
                     return itm.Id == usr.Id;
                 });
             }
-	    };
+        };
 
-	    $scope.selectAll = function () {
-	        if (!$scope.isSelectedAll()) {
-	            _.each($scope.users.items, function (itm) {
-	                if (!$scope.isSelected(itm)) {
-	                    $scope.selectUser(itm);
-	                }
-	            });
-	        } else {
-	            _.each($scope.users.items, function (itm) {
-	                if ($scope.isSelected(itm)) {
-	                    $scope.selectUser(itm);
-	                }
-	            });
-	        }
-	    };
+        $scope.selectAll = function () {
+            if (!$scope.isSelectedAll()) {
+                _.each($scope.users.items, function (itm) {
+                    if (!$scope.isSelected(itm)) {
+                        $scope.selectUser(itm);
+                    }
+                });
+            } else {
+                _.each($scope.users.items, function (itm) {
+                    if ($scope.isSelected(itm)) {
+                        $scope.selectUser(itm);
+                    }
+                });
+            }
+        };
 
-	    $scope.doUpdate = function() {
-	        if ($scope.selectedUsers.length > 0) {
-	            dialogService.open({
-	                options: {
-	                    selectedUsers: $scope.selectedUsers
-	                },
-	                template: '/App_Plugins/BulkUserAdmin/views/bua.dialog.html',
-	                show: true,
-	                callback: function (success) {
-	                    if (success) {
-	                        notificationsService.success("Users Updated", "All users were successfully updated.");
-	                        $scope.selectedUsers = [];
-	                        $scope.goToPage(0); 
-	                    } else {
-	                        notificationsService.error("Error Updating", "There was an error updating the users, please try again.");
-	                    }
-	                }
-	            });
-	        }
-	    }
+        $scope.doUpdate = function () {
+            if ($scope.selectedUsers.length > 0) {
+                dialogService.open({
+                    options: {
+                        selectedUsers: $scope.selectedUsers
+                    },
+                    template: "/App_Plugins/BulkUserAdmin/views/bua.dialog.html",
+                    show: true,
+                    callback: function (success) {
+                        if (success) {
+                            notificationsService.success("Users Updated", "All users were successfully updated.");
+                            $scope.selectedUsers = [];
+                            $scope.goToPage(0, $scope.sortOptions);
+                        } else {
+                            notificationsService.error("Error Updating", "There was an error updating the users, please try again.");
+                        }
+                    }
+                });
+            }
+        }
+        $scope.sort = function (field) {
+            $scope.sortOptions.propertyName = field;
 
-	    $scope.goToPage(0);
+            if ($scope.sortOptions.direction === "Descending") {
+                $scope.sortOptions.direction = "Ascending";
+            }
+            else {
+                $scope.sortOptions.direction = "Descending";
+            }
 
-	}
+            $scope.goToPage(0, $scope.sortOptions);
+        };
+        $scope.isSortDirection = function (col, direction) {
+            return $scope.sortOptions.propertyName.toUpperCase() == col.toUpperCase() && $scope.sortOptions.direction == direction;
+        };
+
+        $scope.goToPage(0, $scope.sortOptions);
+
+    }
 
 ]);
 
@@ -108,7 +127,7 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
     "$rootScope",
     "Our.Umbraco.BulkUserAdmin.Resources",
 
-    function($scope, $rootScope, buaResources) {
+    function ($scope, $rootScope, buaResources) {
 
         var opts = $scope.dialogOptions.options;
 
@@ -141,7 +160,7 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
         $scope.doUpdate = function () {
             var data = {
 
-                userIds: _.map($scope.selectedUsers, function(itm) {
+                userIds: _.map($scope.selectedUsers, function (itm) {
                     return itm.Id;
                 }),
 
@@ -159,7 +178,7 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
                 disableUser: $scope.disableUser,
                 startContentNodeId: $scope.selectedStartContentNode ? $scope.selectedStartContentNode.id : undefined,
                 startMediaNodeId: $scope.selectedStartMediaNode ? $scope.selectedStartMediaNode.id : undefined,
-                sections: _.map($scope.selectedSections, function(itm) {
+                sections: _.map($scope.selectedSections, function (itm) {
                     return itm.Alias;
                 })
 
@@ -174,7 +193,7 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
             if (confirm("Are you sure you want to delete the selected " + $scope.selectedUsers.length + " users?")) {
 
                 var data = {
-                    userIds: _.map($scope.selectedUsers, function(itm) {
+                    userIds: _.map($scope.selectedUsers, function (itm) {
                         return itm.Id;
                     })
                 };

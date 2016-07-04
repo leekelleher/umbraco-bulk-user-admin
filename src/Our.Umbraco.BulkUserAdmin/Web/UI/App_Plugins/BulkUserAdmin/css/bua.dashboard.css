@@ -24,6 +24,9 @@
 .bua--dashboard tr:hover .icon {
     display: block !important;
 }
+.bua--dashboard tr:hover .sortable .icon {
+    display: inline !important;
+}
 
 .bua--dashboard .icon.hide,
 .bua--dashboard tr:hover .icon.hide {
