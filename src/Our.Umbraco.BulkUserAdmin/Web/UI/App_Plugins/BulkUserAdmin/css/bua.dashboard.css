@@ -2,6 +2,14 @@
     display: inline-block !important;
 }
 
+.bua--dashboard table form .icon-search {
+    position: absolute;
+    top: 8px;
+    left: 5px;
+    color: #555;
+    cursor: pointer;
+}
+
 .bua-toolbar {
     background-color: #f8f8f8;
     margin-bottom: 10px;
