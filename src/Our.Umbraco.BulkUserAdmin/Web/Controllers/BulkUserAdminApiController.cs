@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Our.Umbraco.BulkUserAdmin.Models;
@@ -44,12 +45,13 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
             var hasFilter = string.IsNullOrWhiteSpace(f) == false;
 
             var filteredItems = hasFilter
-                ? items.Where(x => new[] {
-                                           x.Name,
-                                           x.Email,
-                                           x.UserType,
-                                           x.Active ? FilterTermActive : FilterTermInactive
-                                         }.InvariantContains(f))
+                ? items.Where(item => new[] {
+                                           item.Name,
+                                           item.Email,
+                                           item.UserType
+                                         }.Any(x => x.IndexOf(f, StringComparison.InvariantCultureIgnoreCase) > -1)
+                                         ||
+                                         string.Equals(f, item.Active ? FilterTermActive : FilterTermInactive, StringComparison.OrdinalIgnoreCase))
                 : items;
 
             total = filteredItems.Count();
