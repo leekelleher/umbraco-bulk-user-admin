@@ -45,6 +45,7 @@ Have a question?
 
 * [Matt Brailsford](https://github.com/mattbrailsford)
 * [Lee Kelleher](https://github.com/leekelleher)
+* [Jamie Pollock](https://github.com/jamiepollock)
 
 
 ## License
