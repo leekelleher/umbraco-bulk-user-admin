@@ -33,35 +33,44 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
 
             int total;
             var items = Services.UserService.GetAll(p, pageSize, out total)
-                .Select(x => new
+                .Select(x => new BulkUserListItemModel()
                 {
-                    x.Id,
-                    x.Name,
-                    x.Email,
+                    Id = x.Id,
+                    Name = x.Name,
+                    Email = x.Email,
                     UserType = x.UserType.Name,
                     Active = x.IsApproved && !x.IsLockedOut
                 });
 
             var hasFilter = string.IsNullOrWhiteSpace(f) == false;
 
-            var filteredItems = hasFilter
-                ? items.Where(item => new[] {
-                                           item.Name,
-                                           item.Email,
-                                           item.UserType
-                                         }.Any(x => x.IndexOf(f, StringComparison.InvariantCultureIgnoreCase) > -1)
-                                         ||
-                                         string.Equals(f, item.Active ? FilterTermActive : FilterTermInactive, StringComparison.OrdinalIgnoreCase))
-                : items;
-
-            total = filteredItems.Count();
-
-            var result = new PagedResult<object>(total, p, pageSize)
+            if (hasFilter)
             {
-                Items = filteredItems.OrderBy(prop, dir)
-            };
+                Func<BulkUserListItemModel, bool> partialMatchOnFields = item => new[] {
+                    item.Name,
+                    item.Email,
+                    item.UserType
+                }.Any(x => x.IndexOf(f, StringComparison.InvariantCultureIgnoreCase) > -1);
 
-            return result;
+                Func<BulkUserListItemModel, bool> exactMatchOnActive = item => string.Equals(f, item.Active ? FilterTermActive : FilterTermInactive, StringComparison.OrdinalIgnoreCase);
+
+                var filteredItems = items.Where(item => partialMatchOnFields(item) || exactMatchOnActive(item));
+
+                return GetOrderedPagedResult(filteredItems, p, pageSize, prop, dir);
+            }
+
+            return GetOrderedPagedResult(items, p, pageSize, prop, dir);
+        }
+
+        private PagedResult<object> GetOrderedPagedResult(IEnumerable<object> items, int p, int pageSize, string prop,
+            OrderByDirections dir)
+        {
+            var total = items.Count();
+
+            return new PagedResult<object>(total, p, pageSize)
+            {
+                Items = items.OrderBy(prop, dir)
+            };
         }
 
         [HttpGet]
