@@ -25,6 +25,18 @@ To clone it locally click the "Clone in Windows" button above or run the followi
 
 ---
 
+## Additional Features
+
+Sorting of users by:
+	* Name
+	* Email
+	* User Type
+	* Active
+
+All columns are filterable. A partial match can be made against Name, Email or User Type. To filter Active status simply type "active" or "inactive".
+
+*Note:* The filter search term is invariant of culture and case.
+
 ## Contributing to this project
 
 Anyone and everyone is welcome to contribute. Please take a moment to review the [guidelines for contributing](CONTRIBUTING.md).
