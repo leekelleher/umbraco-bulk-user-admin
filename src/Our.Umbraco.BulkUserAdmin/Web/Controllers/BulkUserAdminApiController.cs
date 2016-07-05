@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Our.Umbraco.BulkUserAdmin.Models;
@@ -14,35 +15,62 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
     {
         private const OrderByDirections DefaultOrderByDirection = OrderByDirections.Ascending;
         private const string DefaultOrderByPropertyName = "Name";
+        private const string DefaultFilter = "";
+
+        private const string FilterTermActive = "Active";
+        private const string FilterTermInactive = "Inactive";
 
         [HttpGet]
         public PagedResult<object> GetUsers()
         {
-            return this.GetUsers(0, DefaultOrderByPropertyName, DefaultOrderByDirection);
+            return this.GetUsers(0, DefaultOrderByPropertyName, DefaultOrderByDirection, DefaultFilter);
         }
 
         [HttpGet]
-        public PagedResult<object> GetUsers(int p, string prop, OrderByDirections dir)
+        public PagedResult<object> GetUsers(int p, string prop, OrderByDirections dir, string f)
         {
             var pageSize = 1000;
 
             int total;
             var items = Services.UserService.GetAll(p, pageSize, out total)
-                .Select(x => new
+                .Select(x => new BulkUserListItemModel()
                 {
-                    x.Id,
-                    x.Name,
-                    x.Email,
+                    Id = x.Id,
+                    Name = x.Name,
+                    Email = x.Email,
                     UserType = x.UserType.Name,
                     Active = x.IsApproved && !x.IsLockedOut
                 });
 
-            var result = new PagedResult<object>(total, p, pageSize)
+            var hasFilter = string.IsNullOrWhiteSpace(f) == false;
+
+            if (hasFilter)
+            {
+                Func<BulkUserListItemModel, bool> partialMatchOnFields = item => new[] {
+                    item.Name,
+                    item.Email,
+                    item.UserType
+                }.Any(x => x.IndexOf(f, StringComparison.InvariantCultureIgnoreCase) > -1);
+
+                Func<BulkUserListItemModel, bool> exactMatchOnActive = item => string.Equals(f, item.Active ? FilterTermActive : FilterTermInactive, StringComparison.OrdinalIgnoreCase);
+
+                var filteredItems = items.Where(item => partialMatchOnFields(item) || exactMatchOnActive(item));
+
+                return GetOrderedPagedResult(filteredItems, p, pageSize, prop, dir);
+            }
+
+            return GetOrderedPagedResult(items, p, pageSize, prop, dir);
+        }
+
+        private PagedResult<object> GetOrderedPagedResult(IEnumerable<object> items, int p, int pageSize, string prop,
+            OrderByDirections dir)
+        {
+            var total = items.Count();
+
+            return new PagedResult<object>(total, p, pageSize)
             {
                 Items = items.OrderBy(prop, dir)
             };
-
-            return result;
         }
 
         [HttpGet]

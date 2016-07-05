@@ -12,19 +12,20 @@
             propertyName: "Name",
             direction: "Ascending"
         };
+        $scope.filter = "";
 
         $scope.selectedUsers = [];
 
         $scope.prev = function () {
-            $scope.goToPage($scope.users.pageNumber - 1, $scope.sortOptions);
+            $scope.goToPage($scope.users.pageNumber - 1, $scope.sortOptions, $scope.filter);
         };
 
         $scope.next = function () {
-            $scope.goToPage($scope.users.pageNumber + 1, $scope.sortOptions);
+            $scope.goToPage($scope.users.pageNumber + 1, $scope.sortOptions, $scope.filter);
         };
 
-        $scope.goToPage = function (idx, sortOptions) {
-            buaResources.getUsers(idx, sortOptions).then(function (data) {
+        $scope.goToPage = function (idx, sortOptions, filter) {
+            buaResources.getUsers(idx, sortOptions, filter).then(function (data) {
                 $scope.users = data;
 
                 var pagniation = [];
@@ -91,7 +92,7 @@
                         if (success) {
                             notificationsService.success("Users Updated", "All users were successfully updated.");
                             $scope.selectedUsers = [];
-                            $scope.goToPage(0, $scope.sortOptions);
+                            $scope.goToPage(0, $scope.sortOptions, $scope.filter);
                         } else {
                             notificationsService.error("Error Updating", "There was an error updating the users, please try again.");
                         }
@@ -109,14 +110,19 @@
                 $scope.sortOptions.direction = "Descending";
             }
 
-            $scope.goToPage(0, $scope.sortOptions);
+            $scope.goToPage(0, $scope.sortOptions, $scope.filter);
         };
         $scope.isSortDirection = function (col, direction) {
             return $scope.sortOptions.propertyName.toUpperCase() == col.toUpperCase() && $scope.sortOptions.direction == direction;
         };
+        $scope.enterSearch = function ($event) {
+            $($event.target).next().focus();
+        }
+        $scope.search = function () {
+            $scope.goToPage(0, $scope.sortOptions, $scope.filter);
+        };
 
-        $scope.goToPage(0, $scope.sortOptions);
-
+        $scope.goToPage(0, $scope.sortOptions, $scope.filter);
     }
 
 ]);
