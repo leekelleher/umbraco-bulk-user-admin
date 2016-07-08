@@ -8,6 +8,18 @@ A dashboard for the Users section in the Umbraco back-office that enables bulk a
 ![Bulk User Admin dashboard in the Umbraco back-office](docs/assets/img/screenshot-01.png)
 
 > *Note:* Bulk User Admin for Umbraco has been developed against **Umbraco v7.2.0** and will support that version and above.
+## Features
+
+Sorting of users by:
+
+* Name
+* Email
+* User Type
+* Active status
+
+All columns are filterable. A partial match can be made against Name, Email or User Type. To filter Active status simply type "active" or "inactive".
+
+> *Note:* The filter search term is invariant of case and culture.
 
 ---
 
@@ -24,18 +36,6 @@ To clone it locally click the "Clone in Windows" button above or run the followi
 	.\build.cmd
 
 ---
-
-## Additional Features
-
-Sorting of users by:
-	* Name
-	* Email
-	* User Type
-	* Active
-
-All columns are filterable. A partial match can be made against Name, Email or User Type. To filter Active status simply type "active" or "inactive".
-
-*Note:* The filter search term is invariant of culture and case.
 
 ## Contributing to this project
 
