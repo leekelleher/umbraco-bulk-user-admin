@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.Configuration;
 using System.Web.Http;
 using Our.Umbraco.BulkUserAdmin.Models;
 using Our.Umbraco.BulkUserAdmin.Web.Common;
 using Our.Umbraco.BulkUserAdmin.Web.Extensions;
 using Umbraco.Core;
 using Umbraco.Core.Models;
+using Umbraco.Core.Models.Membership;
 using Umbraco.Web.WebApi;
 using Umbraco.Web.WebApi.Filters;
 
@@ -15,6 +16,8 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
     [UmbracoApplicationAuthorize(Constants.Applications.Users)]
     public class BulkUserAdminApiController : UmbracoAuthorizedApiController
     {
+        private const int DefaultPageSize = 50;
+
         private const OrderByDirections DefaultOrderByDirection = OrderByDirections.Ascending;
         private const string DefaultOrderByPropertyName = "Id";
         private const string DefaultFilter = "";
@@ -35,52 +38,92 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
             OrderByDirections dir,
             string f)
         {
-            var pageSize = 1000;
+            int pageSize = GetPageSize();
 
             int total;
-            var items = Services.UserService.GetAll(p, pageSize, out total)
-                .Select(x => new BulkUserListItemModel()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Email = x.Email,
-                    UserType = x.UserType.Name,
-                    Active = x.IsApproved && !x.IsLockedOut
-                });
+            var items = Services
+                .UserService
+                .GetAll(0, int.MaxValue, out total);
 
-            var hasFilter = string.IsNullOrWhiteSpace(f) == false;
-
-            if (hasFilter)
+            if (!string.IsNullOrWhiteSpace(f))
             {
-                Func<BulkUserListItemModel, bool> partialMatchOnFields = item => new[] {
-                    item.Name,
-                    item.Email,
-                    item.UserType
-                }.Any(x => x.IndexOf(f, StringComparison.InvariantCultureIgnoreCase) > -1);
+                var filteredItems = FilterUsers(items, f);
 
-                Func<BulkUserListItemModel, bool> exactMatchOnActive = item => string.Equals(f, item.Active ? FilterTermActive : FilterTermInactive, StringComparison.OrdinalIgnoreCase);
-
-                var filteredItems = items.Where(item => partialMatchOnFields(item) || exactMatchOnActive(item));
-
-                return GetOrderedPagedResult(filteredItems, p, pageSize, prop, dir);
+                return GetOrderedPagedResult(filteredItems, p, pageSize, filteredItems.Count(), prop, dir);
             }
 
-            return GetOrderedPagedResult(items, p, pageSize, prop, dir);
+            return GetOrderedPagedResult(items, p, pageSize, total, prop, dir);
+        }
+
+        private IEnumerable<IUser> FilterUsers(IEnumerable<IUser> items, string filter)
+        {
+            foreach (var item in items)
+            {
+                if (item.Name.InvariantContains(filter))
+                {
+                    yield return item;
+                    continue;
+                }
+
+                if (item.Email.InvariantContains(filter))
+                {
+                    yield return item;
+                    continue;
+                }
+
+                if (item.UserType != null && item.UserType.Name.InvariantContains(filter))
+                {
+                    yield return item;
+                    continue;
+                }
+
+                var isActive = item.IsApproved && !item.IsLockedOut;
+                if (filter.InvariantEquals(isActive ? FilterTermActive : FilterTermInactive))
+                {
+                    yield return item;
+                    continue;
+                }
+            }
         }
 
         private PagedResult<object> GetOrderedPagedResult(
-            IEnumerable<object> items,
-            int p,
+            IEnumerable<IUser> items,
+            int page,
             int pageSize,
-            string prop,
-            OrderByDirections dir)
+            int total,
+            string property,
+            OrderByDirections direction)
         {
-            var total = items.Count();
-
-            return new PagedResult<object>(total, p, pageSize)
+            return new PagedResult<object>(total, page, pageSize)
             {
-                Items = items.OrderBy(prop, dir)
+                Items = items
+                    .Select(x => new
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Email = x.Email,
+                        UserType = x.UserType.Name,
+                        Active = x.IsApproved && !x.IsLockedOut
+                    })
+                    .OrderBy(property, direction)
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
             };
+        }
+
+        private int GetPageSize()
+        {
+            var appSettingKey = "BulkUserAdmin:PageSize";
+            if (WebConfigurationManager.AppSettings.AllKeys.InvariantContains(appSettingKey))
+            {
+                int pageSize;
+                if (int.TryParse(WebConfigurationManager.AppSettings[appSettingKey], out pageSize) && pageSize > 0)
+                {
+                    return pageSize;
+                }
+            }
+
+            return DefaultPageSize;
         }
 
         [HttpGet]
