@@ -17,15 +17,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Package", "Build Pack
 		..\appveyor.yml = ..\appveyor.yml
 		..\build-appveyor.cmd = ..\build-appveyor.cmd
 		..\build.cmd = ..\build.cmd
-		..\build\install.ps1 = ..\build\install.ps1
-		..\build\package.nuspec = ..\build\package.nuspec
 		..\build\package.proj = ..\build\package.proj
-		..\build\package.xml = ..\build\package.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5F160841-2BE7-4F8A-9DC0-A9A62DCBAEF7}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet Package", "NuGet Package", "{08DA477D-496B-4497-95DF-C392E413D0A6}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\transforms\dashboard.config.install.xdt = ..\build\transforms\dashboard.config.install.xdt
+		..\build\install.ps1 = ..\build\install.ps1
+		..\build\package.nuspec = ..\build\package.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Umbraco Package", "Umbraco Package", "{87D45FD6-B566-4368-95E4-DFEE273B3876}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\package.xml = ..\build\package.xml
 	EndProjectSection
 EndProject
 Global
@@ -45,5 +54,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E8FB2B4B-172F-41E3-80BE-C5F9A4FD2606} = {55A5C582-D14C-4ECC-8FE7-A20DEFDE0A60}
 		{5F160841-2BE7-4F8A-9DC0-A9A62DCBAEF7} = {55A5C582-D14C-4ECC-8FE7-A20DEFDE0A60}
+		{08DA477D-496B-4497-95DF-C392E413D0A6} = {E8FB2B4B-172F-41E3-80BE-C5F9A4FD2606}
+		{87D45FD6-B566-4368-95E4-DFEE273B3876} = {E8FB2B4B-172F-41E3-80BE-C5F9A4FD2606}
 	EndGlobalSection
 EndGlobal

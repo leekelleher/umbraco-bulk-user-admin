@@ -20,10 +20,10 @@
 		<PackageName>BulkUserAdmin</PackageName>
 		<MinUmbracoVersion>7.2.0</MinUmbracoVersion>
 		<Readme>Bulk User Admin for Umbraco</Readme>
-		<AuthorName>Matt Brailsford, Lee Kelleher</AuthorName>
+		<AuthorName>Matt Brailsford, Lee Kelleher, Jamie Pollock</AuthorName>
 		<AuthorUrl>https://github.com/leekelleher/umbraco-bulk-user-admin/graphs/contributors</AuthorUrl>
 		<PackageLicenseName>MIT license</PackageLicenseName>
-		<PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+		<PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
 		<ProjectUrl>https://github.com/leekelleher/umbraco-bulk-user-admin</ProjectUrl>
 	</PropertyGroup>
 
@@ -32,7 +32,7 @@
 		<PackageId>Our.Umbraco.BulkUserAdmin</PackageId>
 		<NuGetPackageName>Bulk User Admin for Umbraco</NuGetPackageName>
 		<Copyright>Copyright &#169; 2015 Umbrella Inc, Our Umbraco and other contributors</Copyright>
-		<Owners>Matt Brailsford, Lee Kelleher</Owners>
+		<Owners>Matt Brailsford, Lee Kelleher, Jamie Pollock</Owners>
 		<IconUrl>https://pbs.twimg.com/profile_images/459035051645083648/kM6uyYA1.png</IconUrl>
 		<Tags>umbraco bulk user admin</Tags>
 		<Language>en-GB</Language>
@@ -123,9 +123,8 @@
 			<PluginFiles Include="$(CoreProjectDir)\Web\UI\**\*.*" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 			<NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
-      		<DashboardConfigXDTInstallFile Include="$(MSBuildProjectDirectory)\transforms\dashboard.config.install.xdt" />
-			  
- 			<InstallPsFile Include="$(MSBuildProjectDirectory)\Install.ps1" />
+			<XdtFiles Include="$(MSBuildProjectDirectory)\transforms\*.xdt" />
+			<InstallPsFile Include="$(MSBuildProjectDirectory)\install.ps1" />
 		</ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildUmbDir)\bin" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildUmbDir)" />
@@ -135,10 +134,7 @@
 		<Copy SourceFiles="@(PluginFiles)" DestinationFiles="@(PluginFiles->'$(BuildNuGetDir)\Content\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(SrcFiles)" DestinationFiles="@(SrcFiles->'$(BuildNuGetDir)\src\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
-
-		<!-- NuGet -->
-    	<Copy SourceFiles="@(DashboardConfigXDTInstallFile)" DestinationFolder="$(BuildNuGetDir)\Content\Config" />
-
+		<Copy SourceFiles="@(XdtFiles)" DestinationFolder="$(BuildNuGetDir)\Content\Config" />
 		<Copy SourceFiles="@(InstallPsFile)" DestinationFolder="$(BuildNuGetDir)\tools" />
 	</Target>
 
