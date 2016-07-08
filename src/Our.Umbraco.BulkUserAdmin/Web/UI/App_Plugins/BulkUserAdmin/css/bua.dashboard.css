@@ -26,12 +26,12 @@
 }
 
 .bua-toolbar__right {
-    
 }
 
 .bua--dashboard tr:hover .icon {
     display: block !important;
 }
+
 .bua--dashboard tr:hover .sortable .icon {
     display: inline !important;
 }
@@ -41,7 +41,7 @@
     display: none !important;
 }
 
-.bua-toggle { 
+.bua-toggle {
     margin: 0 5px 0 0 !important;
     vertical-align: middle;
 }
@@ -65,7 +65,7 @@
     opacity: .4;
 }
 
-.bua--dialog .list-icons li>i.icon {
-  padding-right: 5px;
-  margin-left: -35px;
+.bua--dialog .list-icons li > i.icon {
+    padding-right: 5px;
+    margin-left: -35px;
 }

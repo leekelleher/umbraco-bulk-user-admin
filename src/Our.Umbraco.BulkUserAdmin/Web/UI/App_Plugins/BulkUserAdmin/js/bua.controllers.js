@@ -12,6 +12,7 @@
             propertyName: "Name",
             direction: "Ascending"
         };
+
         $scope.filter = "";
 
         $scope.selectedUsers = [];
@@ -100,6 +101,7 @@
                 });
             }
         }
+
         $scope.sort = function (field) {
             $scope.sortOptions.propertyName = field;
 
@@ -112,12 +114,15 @@
 
             $scope.goToPage(0, $scope.sortOptions, $scope.filter);
         };
+
         $scope.isSortDirection = function (col, direction) {
             return $scope.sortOptions.propertyName.toUpperCase() == col.toUpperCase() && $scope.sortOptions.direction == direction;
         };
+
         $scope.enterSearch = function ($event) {
             $($event.target).next().focus();
         }
+
         $scope.search = function () {
             $scope.goToPage(0, $scope.sortOptions, $scope.filter);
         };

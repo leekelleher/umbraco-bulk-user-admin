@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Our.Umbraco.BulkUserAdmin.Models;
+using Our.Umbraco.BulkUserAdmin.Web.Common;
+using Our.Umbraco.BulkUserAdmin.Web.Extensions;
 using Umbraco.Core;
 using Umbraco.Core.Models;
 using Umbraco.Web.WebApi;
@@ -27,7 +29,11 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
         }
 
         [HttpGet]
-        public PagedResult<object> GetUsers(int p, string prop, OrderByDirections dir, string f)
+        public PagedResult<object> GetUsers(
+            int p,
+            string prop,
+            OrderByDirections dir,
+            string f)
         {
             var pageSize = 1000;
 
@@ -62,7 +68,11 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
             return GetOrderedPagedResult(items, p, pageSize, prop, dir);
         }
 
-        private PagedResult<object> GetOrderedPagedResult(IEnumerable<object> items, int p, int pageSize, string prop,
+        private PagedResult<object> GetOrderedPagedResult(
+            IEnumerable<object> items,
+            int p,
+            int pageSize,
+            string prop,
             OrderByDirections dir)
         {
             var total = items.Count();

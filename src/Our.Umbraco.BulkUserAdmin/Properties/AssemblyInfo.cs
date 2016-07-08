@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("A dashboard control to bulk manage user administration in the Umbraco back-office.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Umbrella Inc Ltd")]
-[assembly: AssemblyProduct("Pegasus")]
+[assembly: AssemblyProduct("Pegasus Web")]
 [assembly: AssemblyCopyright("Copyright \xa9 Umbrella Inc Ltd 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

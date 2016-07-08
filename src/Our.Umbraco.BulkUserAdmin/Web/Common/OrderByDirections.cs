@@ -1,4 +1,4 @@
-﻿namespace Our.Umbraco.BulkUserAdmin.Web
+﻿namespace Our.Umbraco.BulkUserAdmin.Web.Common
 {
     public enum OrderByDirections
     {

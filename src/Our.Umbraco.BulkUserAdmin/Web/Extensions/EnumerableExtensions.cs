@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using Our.Umbraco.BulkUserAdmin.Web.Common;
 
-namespace Our.Umbraco.BulkUserAdmin.Web
+namespace Our.Umbraco.BulkUserAdmin.Web.Extensions
 {
-    internal static class GenericCollectionOrderByExtensions
+    internal static class EnumerableExtensions
     {
         public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> items, string propertyName, OrderByDirections direction)
         {
@@ -23,6 +23,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web
             {
                 case OrderByDirections.Descending:
                     return items.OrderByDescending(orderByLambda);
+
                 default:
                     return items.OrderBy(orderByLambda);
             }

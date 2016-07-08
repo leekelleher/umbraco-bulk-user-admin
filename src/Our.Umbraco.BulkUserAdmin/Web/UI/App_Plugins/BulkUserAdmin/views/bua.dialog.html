@@ -1,19 +1,19 @@
 ﻿<div class="bua bua--dialog" ng-controller="Our.Umbraco.BulkUserAdmin.DialogController">
-    
+
     <div class="umb-modalcolumn-header">
         <h1>Update {{selectedUsers.length}} User{{selectedUsers.length == 1 ? '' : 's'}}</h1>
     </div>
 
     <div class="umb-modalcolumn-body">
-    
+
         <div class="umb-panel-body no-header with-footer compact">
-            
+
             <p>Use the checkboxes on the left to set which properties you wish to update, then set the values you want to update them to on the right.</p>
             <p>&nbsp;</p>
 
             <div class="umb-property">
                 <div class="control-group umb-control-group">
-                    
+
                     <div class="umb-el-wrap">
                         <label class="control-label"><input type="checkbox" ng-model="updateUserType" class="bua-toggle" />User Type</label>
                         <div class="controls controls-row" ng-class="{'bua-disabled':!updateUserType}">
@@ -25,7 +25,7 @@
 
                 </div>
             </div>
-            
+
             <div class="umb-property">
                 <div class="control-group umb-control-group">
                     <div class="umb-el-wrap">
@@ -34,11 +34,11 @@
                             <div class="umb-editor umb-boolean">
                                 <input type="checkbox" ng-model="disableUmbracoAccess" ng-disabled="!updateUmbracoAccess" />
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="umb-property">
                 <div class="control-group umb-control-group">
                     <div class="umb-el-wrap">
@@ -51,14 +51,14 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="umb-property">
                 <div class="control-group umb-control-group">
                     <div class="umb-el-wrap">
                         <label class="control-label"><input type="checkbox" ng-model="updateStartContentNode" class="bua-toggle" />Start Node in Content</label>
                         <div class="controls controls-row" ng-class="{'bua-disabled':!updateStartContentNode}">
                             <div class="umb-editor umb-checkboxlist">
-                                
+
                                 <umb-node-picker model="selectedStartContentNode" section="content" tree="content" />
 
                             </div>
@@ -66,14 +66,14 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="umb-property">
                 <div class="control-group umb-control-group">
                     <div class="umb-el-wrap">
                         <label class="control-label"><input type="checkbox" ng-model="updateStartMediaNode" class="bua-toggle" />Start Node in Media</label>
                         <div class="controls controls-row" ng-class="{'bua-disabled':!updateStartMediaNode}">
                             <div class="umb-editor umb-checkboxlist">
-                                
+
                                 <umb-node-picker model="selectedStartMediaNode" section="media" tree="media" />
 
                             </div>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="umb-property">
                 <div class="control-group umb-control-group">
                     <div class="umb-el-wrap">
@@ -91,9 +91,9 @@
                                 <span ng-repeat="section in sections">
                                     <label>
                                         <input type="checkbox" class="bua-toggle"
-                                            ng-checked="isSelectedSection(section)"
-                                            ng-click="selectSection(section)"
-                                            ng-disabled="!updateSections"> {{section.Name}}
+                                               ng-checked="isSelectedSection(section)"
+                                               ng-click="selectSection(section)"
+                                               ng-disabled="!updateSections"> {{section.Name}}
                                     </label><br />
                                 </span>
                             </div>
@@ -107,15 +107,14 @@
         <div class="umb-panel-footer">
             <div class="umb-el-wrap umb-panel-buttons">
                 <div class="btn-toolbar umb-btn-toolbar pull-right">
-		        
+
                     <a href ng-click="close()" class="btn btn-link">
                         Cancel
                     </a>
 
-                    <button
-                        class="btn btn-primary"
-                        ng-click="doUpdate()"
-                        ng-disabled="selectedUsers.length == 0">
+                    <button class="btn btn-primary"
+                            ng-click="doUpdate()"
+                            ng-disabled="selectedUsers.length == 0">
                         Update
                     </button>
 
