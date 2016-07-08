@@ -16,7 +16,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
     public class BulkUserAdminApiController : UmbracoAuthorizedApiController
     {
         private const OrderByDirections DefaultOrderByDirection = OrderByDirections.Ascending;
-        private const string DefaultOrderByPropertyName = "Name";
+        private const string DefaultOrderByPropertyName = "Id";
         private const string DefaultFilter = "";
 
         private const string FilterTermActive = "Active";

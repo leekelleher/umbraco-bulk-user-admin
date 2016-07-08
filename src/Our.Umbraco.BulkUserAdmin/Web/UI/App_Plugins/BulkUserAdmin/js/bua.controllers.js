@@ -9,7 +9,7 @@
 
     function ($scope, $rootScope, $window, dialogService, notificationsService, buaResources) {
         $scope.sortOptions = {
-            propertyName: "Name",
+            propertyName: "Id",
             direction: "Ascending"
         };
 
