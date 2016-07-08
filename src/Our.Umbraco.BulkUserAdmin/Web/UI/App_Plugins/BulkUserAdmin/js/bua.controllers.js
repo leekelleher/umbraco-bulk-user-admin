@@ -18,11 +18,15 @@
         $scope.selectedUsers = [];
 
         $scope.prev = function () {
-            $scope.goToPage($scope.users.pageNumber - 1, $scope.sortOptions, $scope.filter);
+            if ($scope.users.pageNumber > 0) {
+                $scope.goToPage($scope.users.pageNumber - 1, $scope.sortOptions, $scope.filter);
+            }
         };
 
         $scope.next = function () {
-            $scope.goToPage($scope.users.pageNumber + 1, $scope.sortOptions, $scope.filter);
+            if ($scope.users.pageNumber + 1 < $scope.users.totalPages) {
+                $scope.goToPage($scope.users.pageNumber + 1, $scope.sortOptions, $scope.filter);
+            }
         };
 
         $scope.goToPage = function (idx, sortOptions, filter) {
