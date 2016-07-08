@@ -29,7 +29,7 @@
 
 	<Actions>
 		<Action runat="install" undo="true" alias="addDashboardSection" dashboardAlias="Our.Umbraco.BulkUserAdmin">
-		  <section alias="Our.Umbraco.BulkUserAdmin">
+			<section alias="Our.Umbraco.BulkUserAdmin">
 			<areas>
 				<area>users</area>
 			</areas>
@@ -39,7 +39,7 @@
 				</access>
 				<control showOnce="false" addPanel="true" panelCaption="">/App_Plugins/BulkUserAdmin/views/bua.dashboard.html</control>
 			</tab>
-		  </section>
+			</section>
 		</Action>
 	</Actions>
 
