@@ -22,8 +22,8 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
         private const string DefaultOrderByPropertyName = "Id";
         private const string DefaultFilter = "";
 
-        private const string FilterTermActive = "Active";
-        private const string FilterTermInactive = "Inactive";
+        private const string FilterTermActive = "is:active";
+        private const string FilterTermInactive = "is:inactive";
 
         [HttpGet]
         public PagedResult<object> GetUsers()
