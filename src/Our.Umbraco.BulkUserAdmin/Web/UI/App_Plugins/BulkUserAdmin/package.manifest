@@ -1,0 +1,10 @@
+﻿{
+	javascript: [
+		'~/App_Plugins/BulkUserAdmin/js/bua.controllers.js',
+		'~/App_Plugins/BulkUserAdmin/js/bua.directives.js',
+		'~/App_Plugins/BulkUserAdmin/js/bua.resources.js'
+	],
+	css: [
+		'~/App_Plugins/BulkUserAdmin/css/bua.dashboard.css'
+	]
+}

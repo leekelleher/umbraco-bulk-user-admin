@@ -1,0 +1,103 @@
+﻿<div class="bua bua--dashboard" ng-controller="Our.Umbraco.BulkUserAdmin.DashboardController">
+
+    <div class="bua-toolbar">
+        <div class="bua-toolbar__left">{{selectedUsers.length}} Users Selected</div>
+        <div class="bua-toolbar__right">
+            <button class="btn" ng-click="doUpdate()" ng-class="{'btn-success':selectedUsers.length > 0}" ng-disabled="selectedUsers.length === 0">Update</button>
+        </div>
+    </div>
+
+    <div class="umb-listview">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 35px">
+                        <input type="checkbox"
+                               ng-checked="isSelectedAll()"
+                               ng-click="selectAll()" />
+                    </th>
+                    <th>
+                        <a ng-click="sort('Name')" class="sortable" prevent-default>Name<i class="icon" ng-class="{'icon-navigation-up': isSortDirection('Name', 'Ascending'), 'icon-navigation-down': isSortDirection('Name', 'Descending')}"></i></a>
+                    </th>
+                    <th>
+                        <a ng-click="sort('Email')" class="sortable" prevent-default>Email<i class="icon" ng-class="{'icon-navigation-up': isSortDirection('Email', 'Ascending'), 'icon-navigation-down': isSortDirection('Email', 'Descending')}"></i></a>
+                    </th>
+                    <th>
+                        <a ng-click="sort('UserType')" class="sortable" prevent-default>User Type<i class="icon" ng-class="{'icon-navigation-up': isSortDirection('UserType', 'Ascending'), 'icon-navigation-down': isSortDirection('UserType', 'Descending')}"></i></a>
+                    </th>
+                    <th>
+                        <a ng-click="sort('Active')" class="sortable" prevent-default>Active<i class="icon" ng-class="{'icon-navigation-up': isSortDirection('Active', 'Ascending'), 'icon-navigation-down': isSortDirection('Active', 'Descending')}"></i></a>
+                    </th>
+                    <th>
+                        <form class="pull-right" novalidate="">
+                            <i class="icon-search" ng-click="enterSearch($event)"></i>
+                            <input type="text" ng-model="filter" on-keyup="search()" prevent-enter-submit="" no-dirty-check="">
+                        </form>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody ng-show="users.totalItems === 0">
+                <tr>
+                    <td colspan="6">
+                        <p><localize key="content_listViewNoItems">There are no items to show in the list.</localize></p>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tbody ng-hide="users.totalItems === 0">
+                <tr ng-repeat="user in users.items">
+                    <td>
+                        <input type="checkbox"
+                               ng-checked="isSelected(user)"
+                               ng-click="selectUser(user)" />
+                    </td>
+                    <td>
+                        <a href="/umbraco/#/users/framed/%252Fumbraco%252Fusers%252FeditUser.aspx%253Fid%253D{{user.Id}}">
+                            {{user.Name}}
+                        </a>
+                    </td>
+                    <td>
+                        {{user.Email}}
+                    </td>
+                    <td>
+                        {{user.UserType}}
+                    </td>
+                    <td>
+                        <i class="icon icon-check green" ng-class="{hide:!user.Active}"></i>
+                        <i class="icon icon-delete red" ng-class="{hide:user.Active}"></i>
+                    </td>
+                    <td><!-- --></td>
+                </tr>
+            </tbody>
+
+            <tfoot ng-show="pagination.length > 1">
+                <tr>
+                    <th colspan="6">
+                        <div class="pull-left">
+                        </div>
+                        <div class="pagination pagination-right">
+                            <ul>
+                                <li ng-class="{disabled:users.pageNumber <= 0}">
+                                    <a href="#" ng-click="prev()" prevent-default>
+                                        Previous
+                                    </a>
+                                </li>
+                                <li ng-repeat="pgn in pagination" ng-class="{active:pgn.idx == users.pageNumber}">
+                                    <a href="#" ng-click="goToPage(pgn.idx)" prevent-default>{{pgn.name}}</a>
+                                </li>
+                                <li ng-class="{disabled:users.pageNumber >= (users.totalPages - 1)}">
+                                    <a href="#" ng-click="next()" prevent-default>
+                                        Next
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </th>
+                </tr>
+            </tfoot>
+
+        </table>
+    </div>
+
+</div>

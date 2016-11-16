@@ -1,0 +1,71 @@
+﻿.bua--dashboard table input[type=checkbox] {
+    display: inline-block !important;
+}
+
+.bua--dashboard table form .icon-search {
+    position: absolute;
+    top: 8px;
+    left: 5px;
+    color: #555;
+    cursor: pointer;
+}
+
+.bua-toolbar {
+    background-color: #f8f8f8;
+    margin-bottom: 10px;
+    line-height: 30px;
+    text-align: right;
+    border: 1px solid #d9d9d9;
+    padding: 5px;
+}
+
+.bua-toolbar__left {
+    float: left;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.bua-toolbar__right {
+}
+
+.bua--dashboard tr:hover .icon {
+    display: block !important;
+}
+
+.bua--dashboard tr:hover .sortable .icon {
+    display: inline !important;
+}
+
+.bua--dashboard .icon.hide,
+.bua--dashboard tr:hover .icon.hide {
+    display: none !important;
+}
+
+.bua-toggle {
+    margin: 0 5px 0 0 !important;
+    vertical-align: middle;
+}
+
+.bua--dialog .control-label,
+.bua--dialog .controls-row {
+    width: 46%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.bua--dialog .controls-row select {
+    width: 100%;
+}
+
+.bua--dialog .umb-editor {
+    width: 100%;
+}
+
+.bua-disabled {
+    opacity: .4;
+}
+
+.bua--dialog .list-icons li > i.icon {
+    padding-right: 5px;
+    margin-left: -35px;
+}
