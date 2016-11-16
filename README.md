@@ -10,16 +10,12 @@ A dashboard for the Users section in the Umbraco back-office that enables bulk a
 
 ## Features
 
-Sorting of users by:
-
-* Name
-* Email
-* User Type
-* Active status
-
-All columns are filterable. A partial match can be made against Name, Email or User Type. To filter Active status simply type "active" or "inactive".
-
-> *Note:* The filter search term is invariant of case and culture.
+* Sorting - users can be ordered by:
+  - Name
+  - Email
+  - User type
+  - Active status
+* Filtering - all columns are filterable. A partial (case insensitive) match can be made against Name, Email or User Type. To filter the *Active status* use "is:active" or "is:inactive".
 
 ---
 
@@ -87,3 +83,7 @@ Have a question?
 Copyright &copy; 2015 Umbrella Inc, Our Umbraco and [other contributors](https://github.com/leekelleher/umbraco-bulk-user-admin/graphs/contributors)
 
 Licensed under the [MIT License](LICENSE.md)
+
+### Credits
+
+The package logo makes use of an icon called [User](https://thenounproject.com/search/?q=user&i=419) by [Edward Boatman](https://thenounproject.com/edward/) from the [Noun Project](https://thenounproject.com).
