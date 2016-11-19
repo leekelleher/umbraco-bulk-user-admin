@@ -206,6 +206,13 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
                     changed = true;
                 }
 
+                if (model.UpdateLanguage && user.Language != model.Language)
+                {
+                    user.Language = model.Language;
+
+                    changed = true;
+                }
+
                 // Save the user
                 if (changed)
                 {
