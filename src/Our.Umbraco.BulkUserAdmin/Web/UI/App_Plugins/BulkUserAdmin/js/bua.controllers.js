@@ -152,6 +152,7 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
         $scope.updateStartContentNode = false;
         $scope.updateStartMediaNode = false;
         $scope.updateSections = false;
+        $scope.updateLanguage = false;
 
         $scope.selectedUsers = opts.selectedUsers;
         $scope.selectedSections = [];
@@ -186,6 +187,7 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
                 updateStartContentNode: $scope.updateStartContentNode,
                 updateStartMediaNode: $scope.updateStartMediaNode,
                 updateSections: $scope.updateSections,
+                updateLanguage: $scope.updateLanguage,
 
                 // Update data
                 userTypeId: $scope.selectedUserType ? $scope.selectedUserType.Id : undefined,
@@ -195,7 +197,8 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
                 startMediaNodeId: $scope.selectedStartMediaNode ? $scope.selectedStartMediaNode.id : undefined,
                 sections: _.map($scope.selectedSections, function (itm) {
                     return itm.Alias;
-                })
+                }),
+                language: $scope.language ? $scope.language.Name : undefined
 
             };
 
@@ -224,6 +227,9 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
             $scope.userTypes = data;
             buaResources.getSections().then(function (data2) {
                 $scope.sections = data2;
+                buaResources.getLanguages().then(function (data3) {
+                    $scope.languages = data3;
+                });
             });
         });
 
