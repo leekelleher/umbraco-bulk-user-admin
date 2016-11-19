@@ -18,7 +18,7 @@
 	<PropertyGroup>
 		<ProjectName>Our.Umbraco.BulkUserAdmin</ProjectName>
 		<PackageName>BulkUserAdmin</PackageName>
-		<MinUmbracoVersion>7.2.0</MinUmbracoVersion>
+		<MinUmbracoVersion>7.5.4</MinUmbracoVersion>
 		<Readme>Bulk User Admin for Umbraco</Readme>
 		<AuthorName>Matt Brailsford, Lee Kelleher, Jamie Pollock</AuthorName>
 		<AuthorUrl>https://github.com/leekelleher/umbraco-bulk-user-admin/graphs/contributors</AuthorUrl>
