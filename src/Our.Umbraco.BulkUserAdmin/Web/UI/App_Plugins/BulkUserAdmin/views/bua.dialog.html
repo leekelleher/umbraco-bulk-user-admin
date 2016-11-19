@@ -108,7 +108,7 @@
                         <label class="control-label"><input type="checkbox" ng-model="updateLanguage" class="bua-toggle" />Language</label>
                         <div class="controls controls-row" ng-class="{'bua-disabled':!updateLanguage}">
                             <div class="umb-editor umb-dropdown" ng-class="{'bua-disabled':!updateLanguage}">
-                                <select ng-options="language as language.DisplayName for language in languages track by language.Name" ng-model="language"></select>
+                                <select ng-options="language as language.DisplayName for language in languages track by language.Name" ng-model="language" ng-disabled="!updateLanguage"></select>
                             </div>
                         </div>
                     </div>
