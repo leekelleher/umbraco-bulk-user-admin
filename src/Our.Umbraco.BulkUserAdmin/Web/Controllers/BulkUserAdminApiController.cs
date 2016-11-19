@@ -138,6 +138,12 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
             return Services.SectionService.GetSections().OrderBy(x => x.SortOrder).Select(x => new { x.Alias, x.Name });
         }
 
+        [HttpGet]
+        public IEnumerable<object> GetLanguages()
+        {
+            return Services.TextService.GetSupportedCultures().OrderBy(x => x.DisplayName).Select(x => new { x.Name, x.DisplayName });
+        }
+
         [HttpPost]
         public void UpdateUsers(BulkUserUpdateModel model)
         {
