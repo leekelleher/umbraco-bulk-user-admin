@@ -16,6 +16,8 @@
 
         public bool UpdateSections { get; set; }
 
+        public bool UpdateLanguage { get; set; }
+
         public int UserTypeId { get; set; }
 
         public bool DisableUmbracoAccess { get; set; }
@@ -27,5 +29,7 @@
         public int StartMediaNodeId { get; set; }
 
         public string[] Sections { get; set; }
+
+        public string Language { get; set; }
     }
 }

@@ -37,6 +37,16 @@
                     "Failed to get sections"
                 );
             },
+            getLanguages: function () {
+                var url = "/umbraco/backoffice/api/BulkUserAdminApi/GetLanguages";
+                return umbRequestHelper.resourcePromise(
+                    $http({
+                        url: url,
+                        method: "GET"
+                    }),
+                    "Failed to get languages"
+                );
+            },
             updateUsers: function (data) {
                 var url = "/umbraco/backoffice/api/BulkUserAdminApi/UpdateUsers";
                 return umbRequestHelper.resourcePromise(
