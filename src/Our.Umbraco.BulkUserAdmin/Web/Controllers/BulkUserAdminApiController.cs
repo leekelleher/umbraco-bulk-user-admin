@@ -47,15 +47,16 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
             var items = Services
                 .UserService
                 .GetAll(0, int.MaxValue, out total);
+            var zeroIndexedPageNumber = p - 1;
 
             if (!string.IsNullOrWhiteSpace(f))
             {
                 var filteredItems = FilterUsers(items, f);
 
-                return GetOrderedPagedResult(filteredItems, p, pageSize, filteredItems.Count(), prop, dir);
+                return GetOrderedPagedResult(filteredItems, zeroIndexedPageNumber, pageSize, filteredItems.Count(), prop, dir);
             }
 
-            return GetOrderedPagedResult(items, p, pageSize, total, prop, dir);
+            return GetOrderedPagedResult(items, zeroIndexedPageNumber, pageSize, total, prop, dir);
         }
 
         private IEnumerable<IUser> FilterUsers(IEnumerable<IUser> items, string filter)

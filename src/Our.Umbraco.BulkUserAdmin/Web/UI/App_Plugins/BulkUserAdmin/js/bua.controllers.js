@@ -40,7 +40,7 @@
                 else {
                     $scope.sortOptions.orderDirection = "desc";
                 }
-                goToPage(0);
+                goToPage(1);
             },
             isSortDirection(col, direction) {
                 return listViewHelper.setSortingDirection(col, direction, $scope.sortOptions);
@@ -52,7 +52,6 @@
         }
 
         $scope.filter = "";
-
         $scope.paginationOptions = {
             prev: function () {
                 if ($scope.users.pageNumber > 0) {
@@ -60,21 +59,14 @@
                 }
             },
             next: function () {
-                if ($scope.users.pageNumber + 1 < $scope.users.totalPages) {
+                if ($scope.users.pageNumber <= $scope.users.totalPages) {
                     goToPage($scope.users.pageNumber + 1);
                 }
             },
             goToPage: function (idx) {
-                goToPage(idx - 1);
+                goToPage(idx);
             }
-        };
-
-        var goToPage = function (idx) {
-            buaResources.getUsers(idx, $scope.sortOptions, $scope.filter).then(function (data) {
-                $scope.users = data;
-                $scope.users.pageNumber++;
-            });
-        };
+        }
 
         $scope.doUpdate = function () {
             if ($scope.selectedUsers.length > 0) {
@@ -88,7 +80,7 @@
                         if (success) {
                             notificationsService.success("Users Updated", "All users were successfully updated.");
                             $scope.selectedUsers = [];
-                            goToPage(0);
+                            goToPage(1);
                         } else {
                             notificationsService.error("Error Updating", "There was an error updating the users, please try again.");
                         }
@@ -102,12 +94,20 @@
         }
 
         $scope.search = function () {
-            goToPage(0);
+            goToPage(1);
         };
 
-        goToPage(0);
-    }
+        goToPage(1);
 
+        var goToPage = function (idx) {
+            console.log("Was: " + idx);
+
+            buaResources.getUsers(idx, $scope.sortOptions, $scope.filter).then(function (data) {
+                $scope.users = data;
+                $scope.users.pageNumber++;
+            });
+        };
+    }
 ]);
 
 angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController", [
