@@ -10,8 +10,8 @@
 
     function ($scope, $rootScope, $location, dialogService, listViewHelper, notificationsService, buaResources) {
         $scope.sortOptions = {
-            propertyName: "Id",
-            direction: "Ascending"
+            orderBy: "name",
+            orderDirection: "asc"
         };
 
         $scope.selectedUsers = [];
@@ -33,6 +33,20 @@
             },
             isSelectedAll: function () {
                 return listViewHelper.isSelectedAll($scope.users.items, $scope.selectedUsers);
+            },
+            onSort: function (field, allow, isSystem) {
+                $scope.sortOptions.orderBy = field;
+
+                if ($scope.sortOptions.orderDirection === "desc") {
+                    $scope.sortOptions.orderDirection = "asc";
+                }
+                else {
+                    $scope.sortOptions.orderDirection = "desc";
+                }
+                $scope.goToPage(0, $scope.sortOptions, $scope.filter);
+            },
+            isSortDirection(col, direction) {
+                return listViewHelper.setSortingDirection(col, direction, $scope.sortOptions);
             },
             bulkActionsAllowed: 1,
         }
@@ -87,23 +101,6 @@
                 });
             }
         }
-
-        $scope.sort = function (field) {
-            $scope.sortOptions.propertyName = field;
-
-            if ($scope.sortOptions.direction === "Descending") {
-                $scope.sortOptions.direction = "Ascending";
-            }
-            else {
-                $scope.sortOptions.direction = "Descending";
-            }
-
-            $scope.goToPage(0, $scope.sortOptions, $scope.filter);
-        };
-
-        $scope.isSortDirection = function (col, direction) {
-            return $scope.sortOptions.propertyName.toUpperCase() == col.toUpperCase() && $scope.sortOptions.direction == direction;
-        };
 
         $scope.enterSearch = function ($event) {
             $($event.target).next().focus();
