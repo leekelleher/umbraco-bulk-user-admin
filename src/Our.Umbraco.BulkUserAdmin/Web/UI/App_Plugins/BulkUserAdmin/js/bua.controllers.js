@@ -97,7 +97,6 @@
             goToPage(1);
         };
 
-        goToPage(1);
 
         var goToPage = function (idx) {
             buaResources.getUsers(idx, $scope.sortOptions, $scope.filter).then(function (data) {
@@ -105,6 +104,8 @@
                 $scope.users.pageNumber++;
             });
         };
+
+        goToPage(1);
     }
 ]);
 
