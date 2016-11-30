@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Our.Umbraco.BulkUserAdmin.Web.Common;
+using System.Reflection;
 
 namespace Our.Umbraco.BulkUserAdmin.Web.Extensions
 {
@@ -10,7 +11,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Extensions
         public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> items, string propertyName, OrderByDirections direction)
         {
             var type = typeof(T);
-            var property = type.GetProperty(propertyName);
+            var property = type.GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
             if (property == null)
             {
@@ -21,7 +22,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Extensions
 
             switch (direction)
             {
-                case OrderByDirections.Descending:
+                case OrderByDirections.Desc:
                     return items.OrderByDescending(orderByLambda);
 
                 default:

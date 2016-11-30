@@ -19,7 +19,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
     {
         private const int DefaultPageSize = 50;
 
-        private const OrderByDirections DefaultOrderByDirection = OrderByDirections.Ascending;
+        private const OrderByDirections DefaultOrderByDirection = OrderByDirections.Asc;
         private const string DefaultOrderByPropertyName = "Id";
         private const string DefaultFilter = "";
 
