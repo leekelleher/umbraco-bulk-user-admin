@@ -14,6 +14,7 @@ using Umbraco.Web.WebApi.Filters;
 namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
 {
     [UmbracoApplicationAuthorize(Constants.Applications.Users)]
+    [JsonCamelCaseFormatter]
     public class BulkUserAdminApiController : UmbracoAuthorizedApiController
     {
         private const int DefaultPageSize = 50;
@@ -24,6 +25,8 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
 
         private const string FilterTermActive = "is:active";
         private const string FilterTermInactive = "is:inactive";
+
+        private const string UserIconClassName = "icon-user";
 
         [HttpGet]
         public PagedResult<object> GetUsers()
@@ -99,6 +102,7 @@ namespace Our.Umbraco.BulkUserAdmin.Web.Controllers
                 Items = items
                     .Select(x => new
                     {
+                        Icon = UserIconClassName,
                         Id = x.Id,
                         Name = x.Name,
                         Email = x.Email,
