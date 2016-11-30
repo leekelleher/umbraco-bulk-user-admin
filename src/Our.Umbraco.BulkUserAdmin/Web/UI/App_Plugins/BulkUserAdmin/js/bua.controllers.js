@@ -2,20 +2,42 @@
 
     "$scope",
     "$rootScope",
-    "$window",
+    "$location",
     "dialogService",
+    "listViewHelper",
     "notificationsService",
     "Our.Umbraco.BulkUserAdmin.Resources",
 
-    function ($scope, $rootScope, $window, dialogService, notificationsService, buaResources) {
+    function ($scope, $rootScope, $location, dialogService, listViewHelper, notificationsService, buaResources) {
         $scope.sortOptions = {
             propertyName: "Id",
             direction: "Ascending"
         };
 
-        $scope.filter = "";
-
         $scope.selectedUsers = [];
+
+        $scope.tableOptions = {
+            itemProperties: [
+                   { alias: "email", header: "Email Address", isSystem: 0, allowSorting: 1 },
+                   { alias: "userType", header: "User Type", isSystem: 0, allowSorting: 1 },
+                   { alias: "active", header: "Active", isSystem: 0, allowSorting: 1 }
+            ],
+            onClick: function (item) {
+                $location.path('users/framed/%2Fumbraco%2Fusers%2FeditUser.aspx?id=' + item.id);
+            },
+            onSelect: function selectItem(selectedItem, $index, $event) {
+                listViewHelper.selectHandler(selectedItem, $index, $scope.users.items, $scope.selectedUsers, $event);
+            },
+            onSelectAll: function ($event) {
+                listViewHelper.selectAllItems($scope.users.items, $scope.selectedUsers, $event);
+            },
+            isSelectedAll: function () {
+                return listViewHelper.isSelectedAll($scope.users.items, $scope.selectedUsers);
+            },
+            bulkActionsAllowed: 1,
+        }
+
+        $scope.filter = "";
 
         $scope.prev = function () {
             if ($scope.users.pageNumber > 0) {
@@ -43,46 +65,6 @@
 
                 $scope.pagination = pagniation;
             });
-        };
-
-        $scope.isSelected = function (usr) {
-            return _.find($scope.selectedUsers, function (itm) {
-                return itm.Id == usr.Id;
-            }) !== undefined;
-        };
-
-        $scope.isSelectedAll = function () {
-            return $scope.users !== undefined && _.every($scope.users.items, function (itm) {
-                return !!_.find($scope.selectedUsers, function (itm2) {
-                    return itm.Id == itm2.Id;
-                });
-            });
-        };
-
-        $scope.selectUser = function (usr) {
-            if (!$scope.isSelected(usr)) {
-                $scope.selectedUsers.push(usr);
-            } else {
-                $scope.selectedUsers = _.reject($scope.selectedUsers, function (itm) {
-                    return itm.Id == usr.Id;
-                });
-            }
-        };
-
-        $scope.selectAll = function () {
-            if (!$scope.isSelectedAll()) {
-                _.each($scope.users.items, function (itm) {
-                    if (!$scope.isSelected(itm)) {
-                        $scope.selectUser(itm);
-                    }
-                });
-            } else {
-                _.each($scope.users.items, function (itm) {
-                    if ($scope.isSelected(itm)) {
-                        $scope.selectUser(itm);
-                    }
-                });
-            }
         };
 
         $scope.doUpdate = function () {
@@ -159,7 +141,7 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
 
         $scope.isSelectedSection = function (section) {
             return _.find($scope.selectedSections, function (itm) {
-                return itm.Alias == section.Alias;
+                return itm.alias == section.alias;
             }) !== undefined;
         };
 
@@ -168,7 +150,7 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
                 $scope.selectedSections.push(section);
             } else {
                 $scope.selectedSections = _.reject($scope.selectedSections, function (itm) {
-                    return itm.Alias == section.Alias;
+                    return itm.alias == section.alias;
                 });
             }
         };
@@ -177,7 +159,7 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
             var data = {
 
                 userIds: _.map($scope.selectedUsers, function (itm) {
-                    return itm.Id;
+                    return itm.id;
                 }),
 
                 // Update flags
@@ -190,15 +172,15 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
                 updateLanguage: $scope.updateLanguage,
 
                 // Update data
-                userTypeId: $scope.selectedUserType ? $scope.selectedUserType.Id : undefined,
+                userTypeId: $scope.selectedUserType ? $scope.selectedUserType.id : undefined,
                 disableUmbracoAccess: $scope.disableUmbracoAccess,
                 disableUser: $scope.disableUser,
                 startContentNodeId: $scope.selectedStartContentNode ? $scope.selectedStartContentNode.id : undefined,
                 startMediaNodeId: $scope.selectedStartMediaNode ? $scope.selectedStartMediaNode.id : undefined,
                 sections: _.map($scope.selectedSections, function (itm) {
-                    return itm.Alias;
+                    return itm.alias;
                 }),
-                language: $scope.language ? $scope.language.Name : undefined
+                language: $scope.language ? $scope.language.name : undefined
 
             };
 
@@ -212,7 +194,7 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
 
                 var data = {
                     userIds: _.map($scope.selectedUsers, function (itm) {
-                        return itm.Id;
+                        return itm.id;
                     })
                 };
 
