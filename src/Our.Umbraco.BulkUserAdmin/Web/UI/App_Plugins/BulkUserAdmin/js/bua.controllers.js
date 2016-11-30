@@ -9,12 +9,12 @@
     "Our.Umbraco.BulkUserAdmin.Resources",
 
     function ($scope, $rootScope, $location, dialogService, listViewHelper, notificationsService, buaResources) {
+        $scope.selectedUsers = [];
+
         $scope.sortOptions = {
             orderBy: "name",
             orderDirection: "asc"
         };
-
-        $scope.selectedUsers = [];
 
         $scope.tableOptions = {
             itemProperties: [
@@ -49,9 +49,8 @@
                 return listViewHelper.isSelectedAll($scope.users.items, $scope.selectedUsers);
             },
             bulkActionsAllowed: 1,
-        }
+        };
 
-        $scope.filter = "";
         $scope.paginationOptions = {
             prev: function () {
                 if ($scope.users.pageNumber > 0) {
@@ -65,6 +64,47 @@
             },
             goToPage: function (idx) {
                 goToPage(idx);
+            }
+        };
+
+        $scope.isAnythingSelected = function () {
+            return $scope.selectedItemsCount() > 0;
+        }
+
+        $scope.selectedItemsCount = function () {
+            return $scope.selectedUsers.length;
+        }
+        $scope.clearSelection = function () {
+            listViewHelper.clearSelection($scope.users.items, null, $scope.selectedUsers);
+        }
+
+
+        $scope.searchOptions = {
+            filter: ''
+        };
+
+        var searchListView = _.debounce(function () {
+            $scope.$apply(function () {
+                makeSearch();
+            });
+        }, 500);
+
+        $scope.forceSearch = function (ev) {
+            //13: enter
+            switch (ev.keyCode) {
+                case 13:
+                    makeSearch();
+                    break;
+            }
+        };
+
+        $scope.enterSearch = function () {
+            searchListView();
+        };
+
+        function makeSearch() {
+            if ($scope.searchOptions.filter !== null && $scope.searchOptions.filter !== undefined) {
+                goToPage(1);
             }
         }
 
@@ -87,19 +127,14 @@
                     }
                 });
             }
-        }
-
-        $scope.enterSearch = function ($event) {
-            $($event.target).next().focus();
-        }
-
-        $scope.search = function () {
-            goToPage(1);
         };
 
-
         var goToPage = function (idx) {
-            buaResources.getUsers(idx, $scope.sortOptions, $scope.filter).then(function (data) {
+            if ($scope.isAnythingSelected()) {
+                $scope.clearSelection();
+            }
+
+            buaResources.getUsers(idx, $scope.sortOptions, $scope.searchOptions.filter).then(function (data) {
                 $scope.users = data;
                 $scope.users.pageNumber++;
             });
