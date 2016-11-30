@@ -9,8 +9,8 @@
                         method: "GET",
                         params: {
                             p: page,
-                            prop: sortOptions.propertyName,
-                            dir: sortOptions.direction,
+                            prop: sortOptions.orderBy,
+                            dir: sortOptions.orderDirection,
                             f: filter
                         }
                     }),
