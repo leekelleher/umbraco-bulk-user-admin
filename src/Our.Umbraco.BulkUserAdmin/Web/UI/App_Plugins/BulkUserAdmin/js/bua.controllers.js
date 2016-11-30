@@ -100,8 +100,6 @@
         goToPage(1);
 
         var goToPage = function (idx) {
-            console.log("Was: " + idx);
-
             buaResources.getUsers(idx, $scope.sortOptions, $scope.filter).then(function (data) {
                 $scope.users = data;
                 $scope.users.pageNumber++;
