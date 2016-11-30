@@ -31,9 +31,6 @@
             onSelectAll: function ($event) {
                 listViewHelper.selectAllItems($scope.users.items, $scope.selectedUsers, $event);
             },
-            isSelectedAll: function () {
-                return listViewHelper.isSelectedAll($scope.users.items, $scope.selectedUsers);
-            },
             onSort: function (field, allow, isSystem) {
                 $scope.sortOptions.orderBy = field;
 
@@ -43,41 +40,39 @@
                 else {
                     $scope.sortOptions.orderDirection = "desc";
                 }
-                $scope.goToPage(0, $scope.sortOptions, $scope.filter);
+                goToPage(0);
             },
             isSortDirection(col, direction) {
                 return listViewHelper.setSortingDirection(col, direction, $scope.sortOptions);
+            },
+            isSelectedAll: function () {
+                return listViewHelper.isSelectedAll($scope.users.items, $scope.selectedUsers);
             },
             bulkActionsAllowed: 1,
         }
 
         $scope.filter = "";
 
-        $scope.prev = function () {
-            if ($scope.users.pageNumber > 0) {
-                $scope.goToPage($scope.users.pageNumber - 1, $scope.sortOptions, $scope.filter);
-            }
-        };
-
-        $scope.next = function () {
-            if ($scope.users.pageNumber + 1 < $scope.users.totalPages) {
-                $scope.goToPage($scope.users.pageNumber + 1, $scope.sortOptions, $scope.filter);
-            }
-        };
-
-        $scope.goToPage = function (idx, sortOptions, filter) {
-            buaResources.getUsers(idx, sortOptions, filter).then(function (data) {
-                $scope.users = data;
-
-                var pagniation = [];
-                for (var i = 0; i < data.totalPages; i++) {
-                    pagniation.push({
-                        idx: i,
-                        name: i + 1
-                    });
+        $scope.paginationOptions = {
+            prev: function () {
+                if ($scope.users.pageNumber > 0) {
+                    goToPage($scope.users.pageNumber - 1);
                 }
+            },
+            next: function () {
+                if ($scope.users.pageNumber + 1 < $scope.users.totalPages) {
+                    goToPage($scope.users.pageNumber + 1);
+                }
+            },
+            goToPage: function (idx) {
+                goToPage(idx - 1);
+            }
+        };
 
-                $scope.pagination = pagniation;
+        var goToPage = function (idx) {
+            buaResources.getUsers(idx, $scope.sortOptions, $scope.filter).then(function (data) {
+                $scope.users = data;
+                $scope.users.pageNumber++;
             });
         };
 
@@ -93,7 +88,7 @@
                         if (success) {
                             notificationsService.success("Users Updated", "All users were successfully updated.");
                             $scope.selectedUsers = [];
-                            $scope.goToPage(0, $scope.sortOptions, $scope.filter);
+                            goToPage(0);
                         } else {
                             notificationsService.error("Error Updating", "There was an error updating the users, please try again.");
                         }
@@ -107,10 +102,10 @@
         }
 
         $scope.search = function () {
-            $scope.goToPage(0, $scope.sortOptions, $scope.filter);
+            goToPage(0);
         };
 
-        $scope.goToPage(0, $scope.sortOptions, $scope.filter);
+        goToPage(0);
     }
 
 ]);

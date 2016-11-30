@@ -16,4 +16,14 @@
                on-sorting-direction="tableOptions.isSortDirection"
                on-sort="tableOptions.onSort">
     </umb-table>
+
+    <div class="flex justify-center">
+        <umb-pagination ng-if="users.totalPages"
+                        page-number="users.pageNumber"
+                        total-pages="users.totalPages"
+                        on-next="paginationOptions.next"
+                        on-prev="paginationOptions.prev"
+                        on-go-to-page="paginationOptions.goToPage">
+        </umb-pagination>
+    </div>
 </div>
