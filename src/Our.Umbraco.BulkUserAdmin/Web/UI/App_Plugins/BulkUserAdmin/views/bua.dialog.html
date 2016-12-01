@@ -1,140 +1,110 @@
-﻿<div class="bua bua--dialog" ng-controller="Our.Umbraco.BulkUserAdmin.DialogController">
+﻿<div ng-controller="Our.Umbraco.BulkUserAdmin.DialogController">
+    <div class="bua bua--dialog">
+        <p>Use the checkboxes on the left to set which properties you wish to update, then set the values you want to update them to on the right.</p>
+        <p>&nbsp;</p>
 
-    <div class="umb-modalcolumn-header">
-        <h1>Update {{selectedUsers.length}} User{{selectedUsers.length == 1 ? '' : 's'}}</h1>
-    </div>
+        <div class="umb-property">
+            <div class="control-group umb-control-group">
 
-    <div class="umb-modalcolumn-body">
-
-        <div class="umb-panel-body no-header with-footer compact">
-
-            <p>Use the checkboxes on the left to set which properties you wish to update, then set the values you want to update them to on the right.</p>
-            <p>&nbsp;</p>
-
-            <div class="umb-property">
-                <div class="control-group umb-control-group">
-
-                    <div class="umb-el-wrap">
-                        <label class="control-label"><input type="checkbox" ng-model="updateUserType" class="bua-toggle" />User Type</label>
-                        <div class="controls controls-row" ng-class="{'bua-disabled':!updateUserType}">
-                            <div class="umb-editor umb-checkboxlist">
-                                <select ng-model="selectedUserType" ng-options="o.name for o in userTypes" ng-disabled="!updateUserType"></select>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="umb-property">
-                <div class="control-group umb-control-group">
-                    <div class="umb-el-wrap">
-                        <label class="control-label"><input type="checkbox" ng-model="updateUmbracoAccess" class="bua-toggle" />Disable Umbraco Access</label>
-                        <div class="controls controls-row" ng-class="{'bua-disabled':!updateUmbracoAccess}">
-                            <div class="umb-editor umb-boolean">
-                                <input type="checkbox" ng-model="disableUmbracoAccess" ng-disabled="!updateUmbracoAccess" />
-                            </div>
+                <div class="umb-el-wrap">
+                    <label class="control-label"><input type="checkbox" ng-model="model.dialogData.updateUserType" class="bua-toggle" />User Type</label>
+                    <div class="controls controls-row" ng-class="{'bua-disabled':!model.dialogData.updateUserType}">
+                        <div class="umb-editor umb-checkboxlist">
+                            <select ng-model="model.dialogData.selectedUserType" ng-options="o.name for o in model.dialogData.userTypes" ng-disabled="!model.dialogData.updateUserType"></select>
                         </div>
                     </div>
                 </div>
+
             </div>
-
-            <div class="umb-property">
-                <div class="control-group umb-control-group">
-                    <div class="umb-el-wrap">
-                        <label class="control-label"><input type="checkbox" ng-model="updateUserActive" class="bua-toggle" />Disable User</label>
-                        <div class="controls controls-row" ng-class="{'bua-disabled':!updateUserActive}">
-                            <div class="umb-editor umb-boolean">
-                                <input type="checkbox" ng-model="disableUser" ng-disabled="!updateUserActive" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="umb-property">
-                <div class="control-group umb-control-group">
-                    <div class="umb-el-wrap">
-                        <label class="control-label"><input type="checkbox" ng-model="updateStartContentNode" class="bua-toggle" />Start Node in Content</label>
-                        <div class="controls controls-row" ng-class="{'bua-disabled':!updateStartContentNode}">
-                            <div class="umb-editor umb-checkboxlist">
-
-                                <umb-node-picker model="selectedStartContentNode" section="content" tree="content" />
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="umb-property">
-                <div class="control-group umb-control-group">
-                    <div class="umb-el-wrap">
-                        <label class="control-label"><input type="checkbox" ng-model="updateStartMediaNode" class="bua-toggle" />Start Node in Media</label>
-                        <div class="controls controls-row" ng-class="{'bua-disabled':!updateStartMediaNode}">
-                            <div class="umb-editor umb-checkboxlist">
-
-                                <umb-node-picker model="selectedStartMediaNode" section="media" tree="media" />
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="umb-property">
-                <div class="control-group umb-control-group">
-                    <div class="umb-el-wrap">
-                        <label class="control-label"><input type="checkbox" ng-model="updateSections" class="bua-toggle" />Sections</label>
-                        <div class="controls controls-row" ng-class="{'bua-disabled':!updateSections}">
-                            <div class="umb-editor umb-checkboxlist" ng-class="{'bua-disabled':!updateSections}">
-                                <span ng-repeat="section in sections">
-                                    <label>
-                                        <input type="checkbox" class="bua-toggle"
-                                               ng-checked="isSelectedSection(section)"
-                                               ng-click="selectSection(section)"
-                                               ng-disabled="!updateSections"> {{section.name}}
-                                    </label><br />
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="umb-property">
-                <div class="control-group umb-control-group">
-                    <div class="umb-el-wrap">
-                        <label class="control-label"><input type="checkbox" ng-model="updateLanguage" class="bua-toggle" />Language</label>
-                        <div class="controls controls-row" ng-class="{'bua-disabled':!updateLanguage}">
-                            <div class="umb-editor umb-dropdown" ng-class="{'bua-disabled':!updateLanguage}">
-                                <select ng-options="language as language.displayName for language in languages track by language.name" ng-model="language" ng-disabled="!updateLanguage"></select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <div class="umb-panel-footer">
-            <div class="umb-el-wrap umb-panel-buttons">
-                <div class="btn-toolbar umb-btn-toolbar pull-right">
-
-                    <a href ng-click="close()" class="btn btn-link">
-                        Cancel
-                    </a>
-
-                    <button class="btn btn-primary"
-                            ng-click="doUpdate()"
-                            ng-disabled="selectedUsers.length == 0">
-                        Update
-                    </button>
-
+        <div class="umb-property">
+            <div class="control-group umb-control-group">
+                <div class="umb-el-wrap">
+                    <label class="control-label"><input type="checkbox" ng-model="model.dialogData.updateUmbracoAccess" class="bua-toggle" />Disable Umbraco Access</label>
+                    <div class="controls controls-row" ng-class="{'bua-disabled':!model.dialogData.updateUmbracoAccess}">
+                        <div class="umb-editor umb-boolean">
+                            <input type="checkbox" ng-model="model.dialogData.disableUmbracoAccess" ng-disabled="!model.dialogData.updateUmbracoAccess" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-    </div>
+        <div class="umb-property">
+            <div class="control-group umb-control-group">
+                <div class="umb-el-wrap">
+                    <label class="control-label"><input type="checkbox" ng-model="model.dialogData.updateUserActive" class="bua-toggle" />Disable User</label>
+                    <div class="controls controls-row" ng-class="{'bua-disabled':!model.dialogData.updateUserActive}">
+                        <div class="umb-editor umb-boolean">
+                            <input type="checkbox" ng-model="model.dialogData.disableUser" ng-disabled="!model.dialogData.updateUserActive" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="umb-property">
+            <div class="control-group umb-control-group">
+                <div class="umb-el-wrap">
+                    <label class="control-label"><input type="checkbox" ng-model="model.dialogData.updateStartContentNode" class="bua-toggle" />Start Node in Content</label>
+                    <div class="controls controls-row" ng-class="{'bua-disabled':!model.dialogData.updateStartContentNode}">
+                        <div class="umb-editor umb-checkboxlist">
+
+                            <umb-node-picker model="model.dialogData.selectedStartContentNode" section="content" tree="content" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="umb-property">
+            <div class="control-group umb-control-group">
+                <div class="umb-el-wrap">
+                    <label class="control-label"><input type="checkbox" ng-model="model.dialogData.updateStartMediaNode" class="bua-toggle" />Start Node in Media</label>
+                    <div class="controls controls-row" ng-class="{'bua-disabled':!model.dialogData.updateStartMediaNode}">
+                        <div class="umb-editor umb-checkboxlist">
+
+                            <umb-node-picker model="model.dialogData.selectedStartMediaNode" section="media" tree="media" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="umb-property">
+            <div class="control-group umb-control-group">
+                <div class="umb-el-wrap">
+                    <label class="control-label"><input type="checkbox" ng-model="model.dialogData.updateSections" class="bua-toggle" />Sections</label>
+                    <div class="controls controls-row" ng-class="{'bua-disabled':!model.dialogData.updateSections}">
+                        <div class="umb-editor umb-checkboxlist" ng-class="{'bua-disabled':!model.dialogData.updateSections}">
+                            <span ng-repeat="section in model.dialogData.sections">
+                                <label>
+                                    <input type="checkbox" class="bua-toggle"
+                                           ng-checked="model.dialogData.isSelectedSection(section)"
+                                           ng-click="model.dialogData.selectSection(section)"
+                                           ng-disabled="!model.dialogData.updateSections"> {{section.name}}
+                                </label><br />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="umb-property">
+            <div class="control-group umb-control-group">
+                <div class="umb-el-wrap">
+                    <label class="control-label"><input type="checkbox" ng-model="model.dialogData.updateLanguage" class="bua-toggle" />Language</label>
+                    <div class="controls controls-row" ng-class="{'bua-disabled':!model.dialogData.updateLanguage}">
+                        <div class="umb-editor umb-dropdown" ng-class="{'bua-disabled':!model.dialogData.updateLanguage}">
+                            <select ng-options="language as language.displayName for language in model.dialogData.languages track by language.name" ng-model="model.dialogData.language" ng-disabled="!model.dialogData.updateLanguage"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -24,7 +24,7 @@
                    { alias: "active", header: "Active", isSystem: 0, allowSorting: 1 }
             ],
             onClick: function (item) {
-                $location.path('users/framed/%2Fumbraco%2Fusers%2FeditUser.aspx?id=' + item.id);
+                $location.path('users/framed/%2Fumbraco%2Fusers%2FeditUser.aspx%3Fid%3D' + item.id);
             },
             onSelect: function selectItem(selectedItem, $index, $event) {
                 listViewHelper.selectHandler(selectedItem, $index, $scope.users.items, $scope.selectedUsers, $event);
@@ -110,29 +110,67 @@
         }
 
         $scope.doUpdate = function () {
-            if ($scope.selectedUsers.length > 0) {
-                $scope.actionInProgress = true;
+            var selectedUsersCount = $scope.selectedItemsCount();
 
-                dialogService.open({
-                    options: {
-                        selectedUsers: $scope.selectedUsers
-                    },
-                    template: "/App_Plugins/BulkUserAdmin/views/bua.dialog.html",
-                    show: true,
-                    callback: function (success) {
-                        if (success) {
-                            notificationsService.success("Users Updated", "All users were successfully updated.");
-                            $scope.selectedUsers = [];
-                            goToPage(1);
-                        } else {
-                            notificationsService.error("Error Updating", "There was an error updating the users, please try again.");
-                        }
-                    },
-                    closeCallback: function () {
-                        $scope.actionInProgress = false;
-                    }
-                });
+            var dialogCleanUp = function () {
+                $scope.actionInProgress = false;
+                $scope.updateDialog.show = false;
+                $scope.updateDialog = null;
             }
+            $scope.updateDialog = {
+                dialogData: {
+                    selectedUsers: $scope.selectedUsers
+                }
+            };
+            $scope.updateDialog.view = "/App_Plugins/BulkUserAdmin/views/bua.dialog.html";
+            $scope.updateDialog.show = true;
+
+            $scope.updateDialog.title = "Update " + selectedUsersCount + " User" + (selectedUsersCount == 1 ? '' : 's');
+
+            $scope.updateDialog.submit = function (model) {
+                var dialogData = model.dialogData;
+
+                if (dialogData) {
+                    var data = {
+                        userIds: _.map(dialogData.selectedUsers, function (itm) {
+                            return itm.id;
+                        }),
+
+                        // Update flags
+                        updateUserType: dialogData.updateUserType,
+                        updateUmbracoAccess: dialogData.updateUmbracoAccess,
+                        updateUserActive: dialogData.updateUserActive,
+                        updateStartContentNode: dialogData.updateStartContentNode,
+                        updateStartMediaNode: dialogData.updateStartMediaNode,
+                        updateSections: dialogData.updateSections,
+                        updateLanguage: dialogData.updateLanguage,
+
+                        // Update data
+                        userTypeId: dialogData.selectedUserType ? dialogData.selectedUserType.id : undefined,
+                        disableUmbracoAccess: dialogData.disableUmbracoAccess,
+                        disableUser: dialogData.disableUser,
+                        startContentNodeId: dialogData.selectedStartContentNode ? dialogData.selectedStartContentNode.id : undefined,
+                        startMediaNodeId: dialogData.selectedStartMediaNode ? dialogData.selectedStartMediaNode.id : undefined,
+                        sections: _.map(dialogData.selectedSections, function (itm) {
+                            return itm.alias;
+                        }),
+                        language: dialogData.language ? dialogData.language.name : undefined
+                    };
+
+                    buaResources.updateUsers(data).then(function () {
+                        dialogCleanUp();
+                        notificationsService.success("Users Updated", "All users were successfully updated.");
+                        goToPage(1);
+                    }, function () {
+                        dialogCleanUp();
+                        notificationsService.error("Error Updating", "There was an error updating the users, please try again.");
+                    });
+                }
+            };
+
+            $scope.updateDialog.close = function (oldModel) {
+                dialogCleanUp();
+            };
         };
 
 
@@ -176,78 +214,44 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
     "Our.Umbraco.BulkUserAdmin.Resources",
 
     function ($scope, $rootScope, buaResources) {
-        var opts = $scope.dialogOptions.options;
+        $scope.model.dialogData.updateUserType = false;
+        $scope.model.dialogData.updateUmbracoAccess = false;
+        $scope.model.dialogData.updateUserActive = false;
+        $scope.model.dialogData.updateStartContentNode = false;
+        $scope.model.dialogData.updateStartMediaNode = false;
+        $scope.model.dialogData.updateSections = false;
+        $scope.model.dialogData.updateLanguage = false;
 
-        $scope.updateUserType = false;
-        $scope.updateUmbracoAccess = false;
-        $scope.updateUserActive = false;
-        $scope.updateStartContentNode = false;
-        $scope.updateStartMediaNode = false;
-        $scope.updateSections = false;
-        $scope.updateLanguage = false;
+        $scope.model.dialogData.selectedSections = [];
 
-        $scope.selectedUsers = opts.selectedUsers;
-        $scope.selectedSections = [];
-
-        $scope.isSelectedSection = function (section) {
-            return _.find($scope.selectedSections, function (itm) {
+        $scope.model.dialogData.isSelectedSection = function (section) {
+            return _.find($scope.model.dialogData.selectedSections, function (itm) {
                 return itm.alias == section.alias;
             }) !== undefined;
         };
 
-        $scope.selectSection = function (section) {
-            if (!$scope.isSelectedSection(section)) {
-                $scope.selectedSections.push(section);
+        $scope.model.dialogData.selectSection = function (section) {
+            if (!$scope.model.dialogData.isSelectedSection(section)) {
+                $scope.model.dialogData.selectedSections.push(section);
             } else {
-                $scope.selectedSections = _.reject($scope.selectedSections, function (itm) {
+                $scope.model.dialogData.selectedSections = _.reject($scope.model.dialogData.selectedSections, function (itm) {
                     return itm.alias == section.alias;
                 });
             }
         };
 
-        $scope.doUpdate = function () {
-            var data = {
-                userIds: _.map($scope.selectedUsers, function (itm) {
-                    return itm.id;
-                }),
-
-                // Update flags
-                updateUserType: $scope.updateUserType,
-                updateUmbracoAccess: $scope.updateUmbracoAccess,
-                updateUserActive: $scope.updateUserActive,
-                updateStartContentNode: $scope.updateStartContentNode,
-                updateStartMediaNode: $scope.updateStartMediaNode,
-                updateSections: $scope.updateSections,
-                updateLanguage: $scope.updateLanguage,
-
-                // Update data
-                userTypeId: $scope.selectedUserType ? $scope.selectedUserType.id : undefined,
-                disableUmbracoAccess: $scope.disableUmbracoAccess,
-                disableUser: $scope.disableUser,
-                startContentNodeId: $scope.selectedStartContentNode ? $scope.selectedStartContentNode.id : undefined,
-                startMediaNodeId: $scope.selectedStartMediaNode ? $scope.selectedStartMediaNode.id : undefined,
-                sections: _.map($scope.selectedSections, function (itm) {
-                    return itm.alias;
-                }),
-                language: $scope.language ? $scope.language.name : undefined
-
-            };
-
-            buaResources.updateUsers(data).then(function () {
-                $scope.submit(true);
-            });
-        };
-
         // Load data
         buaResources.getUserTypes().then(function (data) {
-            $scope.userTypes = data;
+            $scope.model.dialogData.userTypes = data;
             buaResources.getSections().then(function (data2) {
-                $scope.sections = data2;
+                $scope.model.dialogData.sections = data2;
                 buaResources.getLanguages().then(function (data3) {
-                    $scope.languages = data3;
+                    $scope.model.dialogData.languages = data3;
                 });
             });
         });
+
+        $scope.b
     }
 
 ]);

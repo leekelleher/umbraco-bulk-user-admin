@@ -76,4 +76,11 @@
                         on-go-to-page="paginationOptions.goToPage">
         </umb-pagination>
     </div>
+
+
+    <umb-overlay ng-if="updateDialog.show"
+                 model="updateDialog"
+                 position="right"
+                 view="updateDialog.view">
+    </umb-overlay>
 </div>
