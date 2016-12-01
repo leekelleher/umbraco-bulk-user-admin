@@ -10,6 +10,7 @@
 
     function ($scope, $rootScope, $location, dialogService, listViewHelper, notificationsService, buaResources) {
         $scope.selectedUsers = [];
+        $scope.actionInProgress = false;
 
         $scope.sortOptions = {
             orderBy: "name",
@@ -110,6 +111,8 @@
 
         $scope.doUpdate = function () {
             if ($scope.selectedUsers.length > 0) {
+                $scope.actionInProgress = true;
+
                 dialogService.open({
                     options: {
                         selectedUsers: $scope.selectedUsers
@@ -124,12 +127,34 @@
                         } else {
                             notificationsService.error("Error Updating", "There was an error updating the users, please try again.");
                         }
+                    },
+                    closeCallback: function () {
+                        $scope.actionInProgress = false;
                     }
                 });
             }
         };
 
+
+        $scope.doDelete = function () {
+            if (confirm("Are you sure you want to delete the selected " + $scope.selectedUsers.length + " users?")) {
+                $scope.actionInProgress = true;
+                var data = {
+                    userIds: _.map($scope.selectedUsers, function (itm) {
+                        return itm.id;
+                    })
+                };
+
+                buaResources.deleteUsers(data).then(function () {
+                    notificationsService.success("Users Updated", "All users were successfully deleted.");
+                    goToPage(1);
+                });
+            }
+        }
+
         var goToPage = function (idx) {
+            $scope.actionInProgress = false;
+
             if ($scope.isAnythingSelected()) {
                 $scope.clearSelection();
             }
@@ -151,7 +176,6 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
     "Our.Umbraco.BulkUserAdmin.Resources",
 
     function ($scope, $rootScope, buaResources) {
-
         var opts = $scope.dialogOptions.options;
 
         $scope.updateUserType = false;
@@ -183,7 +207,6 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
 
         $scope.doUpdate = function () {
             var data = {
-
                 userIds: _.map($scope.selectedUsers, function (itm) {
                     return itm.id;
                 }),
@@ -215,21 +238,6 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
             });
         };
 
-        $scope.doDelete = function () {
-            if (confirm("Are you sure you want to delete the selected " + $scope.selectedUsers.length + " users?")) {
-
-                var data = {
-                    userIds: _.map($scope.selectedUsers, function (itm) {
-                        return itm.id;
-                    })
-                };
-
-                buaResources.deleteUsers(data).then(function () {
-                    $scope.submit(true);
-                });
-            }
-        }
-
         // Load data
         buaResources.getUserTypes().then(function (data) {
             $scope.userTypes = data;
@@ -240,7 +248,6 @@ angular.module("umbraco").controller("Our.Umbraco.BulkUserAdmin.DialogController
                 });
             });
         });
-
     }
 
 ]);

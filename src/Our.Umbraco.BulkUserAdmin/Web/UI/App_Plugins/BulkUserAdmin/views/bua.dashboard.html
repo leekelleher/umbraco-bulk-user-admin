@@ -34,7 +34,25 @@
                         </div>
                     </form>
                 </umb-editor-sub-header-section>
-        </umb-editor-sub-header>
+
+                <umb-editor-sub-header-section ng-if="isAnythingSelected()">
+                    <umb-button type="button"
+                                button-style="link"
+                                label="Update"
+                                label-key="actions_update"
+                                icon="icon-edit"
+                                action="doUpdate()"
+                                disabled="actionInProgress">
+                    </umb-button>
+                    <umb-button type="button"
+                                button-style="link"
+                                label="Delete"
+                                label-key="actions_delete"
+                                icon="icon-trash"
+                                action="doDelete()"
+                                disabled="actionInProgress">
+                    </umb-button>
+                </umb-editor-sub-header-section>
     </div>
 
     <umb-table ng-if="users.items"
