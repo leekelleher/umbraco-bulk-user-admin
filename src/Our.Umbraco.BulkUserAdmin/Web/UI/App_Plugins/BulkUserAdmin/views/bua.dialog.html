@@ -18,7 +18,7 @@
                         <label class="control-label"><input type="checkbox" ng-model="updateUserType" class="bua-toggle" />User Type</label>
                         <div class="controls controls-row" ng-class="{'bua-disabled':!updateUserType}">
                             <div class="umb-editor umb-checkboxlist">
-                                <select ng-model="selectedUserType" ng-options="o.Name for o in userTypes" ng-disabled="!updateUserType"></select>
+                                <select ng-model="selectedUserType" ng-options="o.name for o in userTypes" ng-disabled="!updateUserType"></select>
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                                         <input type="checkbox" class="bua-toggle"
                                                ng-checked="isSelectedSection(section)"
                                                ng-click="selectSection(section)"
-                                               ng-disabled="!updateSections"> {{section.Name}}
+                                               ng-disabled="!updateSections"> {{section.name}}
                                     </label><br />
                                 </span>
                             </div>
@@ -108,7 +108,7 @@
                         <label class="control-label"><input type="checkbox" ng-model="updateLanguage" class="bua-toggle" />Language</label>
                         <div class="controls controls-row" ng-class="{'bua-disabled':!updateLanguage}">
                             <div class="umb-editor umb-dropdown" ng-class="{'bua-disabled':!updateLanguage}">
-                                <select ng-options="language as language.DisplayName for language in languages track by language.Name" ng-model="language" ng-disabled="!updateLanguage"></select>
+                                <select ng-options="language as language.displayName for language in languages track by language.name" ng-model="language" ng-disabled="!updateLanguage"></select>
                             </div>
                         </div>
                     </div>
