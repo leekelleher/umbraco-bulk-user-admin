@@ -30,6 +30,12 @@
         };
 
         $scope.goToPage = function (idx, sortOptions, filter) {
+            if (typeof (sortOptions) === 'undefined')
+                sortOptions = $scope.sortOptions;
+
+            if (typeof (filter) === 'undefined')
+                filter = $scope.filter;
+
             buaResources.getUsers(idx, sortOptions, filter).then(function (data) {
                 $scope.users = data;
 
