@@ -1,6 +1,6 @@
 # Bulk User Admin for Umbraco
 
-[![Build status](https://img.shields.io/appveyor/ci/leekelleher/umbraco-bulk-user-admin.svg)](https://ci.appveyor.com/project/leekelleher/umbraco-bulk-user-admin)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![NuGet release](https://img.shields.io/nuget/v/Our.Umbraco.BulkUserAdmin.svg)](https://www.nuget.org/packages/Our.Umbraco.BulkUserAdmin)
 [![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/backoffice-extensions/bulk-user-admin)
 
